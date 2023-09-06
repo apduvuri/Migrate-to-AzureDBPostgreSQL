@@ -1,4 +1,4 @@
-# Migrate IaaS/On-Premises/AWS PostgreSQL databases to Azure Database for PostgreSQL - Flexible server
+# Migrate IaaS/On-Premises PostgreSQL databases to Azure Database for PostgreSQL - Flexible server
 
 Azure Database for PostgreSQL - Flexible Server is a fully managed database service designed to provide more granular control and flexibility over database management functions and configuration settings. The service generally provides more flexibility and server configuration customizations based on user requirements. The flexible server architecture allows users to collocate the database engine with the client tier for lower latency and choose high availability within a single availability zone and across multiple availability zones. Flexible servers also provide better cost optimization controls with the ability to stop/start your server and a burstable compute tier ideal for workloads that don't need full compute capacity continuously.
 
