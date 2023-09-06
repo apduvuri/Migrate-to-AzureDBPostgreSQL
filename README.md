@@ -35,7 +35,7 @@ Get started with the offline migration from on-premises/IaaS to Azure Database f
 * Certain collations are not supported for migrations into Azure Database for PostgreSQL – Flexible server. Please contact Microsoft team, for failures in migrations related to Collations.
 * User-defined collations cannot be migrated into Azure Database for PostgreSQL – Flexible server.
 * Superuser is not supported in Azure Database for PostgreSQL – Flexible server. Below are the few statements that are not supported in the PostgreSQL flexible server – 
-    * Alter user <<username>> with SUPERUSER;
+    * Alter user `<<username>>` with SUPERUSER;
     * Create casts
     * Creation of FTS parsers and FTS templates
     * Users with superuser roles
