@@ -24,7 +24,7 @@ The migration service is currently exposed through easy-to-use Azure CLI command
 ### Azure CLI Setup
 
 * Install the Azure CLI depending on the operating system to run the CLI commands.
-* Azure CLI can be installed from - How to install the Azure CLI | Microsoft Learn
+* Azure CLI can be installed from - [How to install the Azure CLI | Microsoft Learn](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 * In case Azure CLI is already installed, check the version by issuing az version command. The version should be at least 2.50.0 or above to use the private preview version of the CLI commands. If not, please update your Azure CLI using the following link.
 * Once installed, run the az login command. This will open the default browser and load an Azure sign-in page to authenticate. Pass in your azure credentials to do a successful authentication. For other ways to sign with Azure CLI, visit this link.
 
@@ -32,7 +32,7 @@ The migration service is currently exposed through easy-to-use Azure CLI command
 
 * Before starting the migration, Azure Database for PostgreSQL – Flexible server must be created. 
 * SKU provisioned for Azure Database for PostgreSQL – Flexible server should be matching with the source.
-* To create new Azure Database for PostgreSQL – Flexible server, refer link - Quickstart: Create server - Azure portal - Azure Database for PostgreSQL - Flexible Server | Microsoft Learn
+* To create new Azure Database for PostgreSQL – Flexible server, refer link - [Quickstart: Create server - Azure portal - Azure Database for PostgreSQL - Flexible Server | Microsoft Learn](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal)
  
 ### Source version
 Source PostgreSQL version should be >= 9.5
@@ -50,12 +50,12 @@ The following table can help for setting up the network between source and targe
 | Private | Private | You need to establish Express route or IP Sec VPN, or VPN Tunnelling or VNET Peering between source and target. |
 
 * Along with establishing Azure connectivity, check the pg_hba.conf file to ensure the target PostgreSQL flexible server can connect to the source. It requires Source PostgreSQL instance to be restarted.
-* To establish Express route - Azure ExpressRoute Overview: Connect over a private connection | Microsoft Learn
-* For setting up IP Sec VPN, you can refer - About Azure Point-to-Site VPN connections - Azure VPN Gateway | Microsoft Learn
-* For VNET Peering, Azure Virtual Network peering | Microsoft Learn
+* To establish Express route - [Azure ExpressRoute Overview: Connect over a private connection | Microsoft Learn](https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction)
+* For setting up IP Sec VPN, you can refer - [About Azure Point-to-Site VPN connections - Azure VPN Gateway | Microsoft Learn](https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-about)
+* For VNET Peering, [Azure Virtual Network peering | Microsoft Learn](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview)
 
 ### Extensions
-* Use the select command in the source to list all the extensions that are being used - Select * from pg_extensions;
+* Use the select command in the source to list all the extensions that are being used - `Select * from pg_extensions;`
 * Search for azure.extensions server parameter on the Server parameter blade on your Azure Database for PostgreSQL – Flexible server. Enable the extensions found in the source within the PostgreSQL flexible server.
 ![Enable extensions](./media/az-flexible-server-enable-extensions.png "Enable Extensions")
 * Check if the list contains any of the following extensions - 
@@ -76,16 +76,16 @@ If yes, go to the server parameters blade and search for shared_preload_librarie
 
 ### Server Parameters
 * You need to manually configure the server parameter values in the Azure Database for PostgreSQL – Flexible server based on the server parameter values configured in the source.
-* You can also configure the server parameters in the target using the CLI - Configure parameters - Azure Database for PostgreSQL - Flexible Server | Microsoft Learn
+* You can also configure the server parameters in the target using the CLI - [Configure parameters - Azure Database for PostgreSQL - Flexible Server | Microsoft Learn](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/howto-configure-server-parameters-using-cli)
 
 ## Starting with CLI
 The preview comes with a list of easy-to-use CLI commands to perform migration related tasks. All the CLI commands starts with “az postgres flexible-server migration”. There are also help statements provided to assist you in understanding the various options and in framing the right syntax for the CLI commands.
 CLI commands for migrating from On-premises/IaaS to Azure Database for PostgreSQL – Flexible server is almost like the CLI commands used to migrate from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server.
-At present for offline migration, CLI commands is in GA that supports migration from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server. Tutorial: Migrate Azure Database for PostgreSQL - Single Server to Flexible Server using the Azure CLI - Azure Database for PostgreSQL Flexible Server | Microsoft Learn
+At present for offline migration, CLI commands is in GA that supports migration from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server [Tutorial: Migrate Azure Database for PostgreSQL - Single Server to Flexible Server using the Azure CLI - Azure Database for PostgreSQL Flexible Server | Microsoft Learn](https://learn.microsoft.com/en-us/azure/postgresql/migrate/how-to-migrate-single-to-flexible-cli)
 Once the CLI is installed, open the command prompt and login into the azure account using the below command.
 
 Example with Windows command prompt - 
-```az login```
+`az login`
 
 ![azlogin CLI](./media/azlogin_cli.png "azlogin CLI")
 
@@ -99,7 +99,7 @@ Command ```az postgres flexible-server migration –-help``` will provide the na
 ### create
 The create command helps in creating a migration from a source server to target server.
 
-The help command will allow users to understand the different arguments used for creating and initiating the migration ```az postgres flexible-server migration create --help```
+The help command will allow users to understand the different arguments used for creating and initiating the migration `az postgres flexible-server migration create --help`
 ![azmigrationcreatehelpcli](./media/az_flexible_migration_help_create_cli.png "azmigrationcreatehelpcli")
 
 Example - 
@@ -182,7 +182,7 @@ In this tutorial, we will be migrating PostgreSQL database residing in Azure VM 
 ![azmigrationsource](./media/az_migration_source_cli.png "azmigrationsource")
 
 ### Step 2 - Create target Azure Database for PostgreSQL – Flexible server
-We used the QuickStart guide to create a corresponding PostgreSQL target flexible server. We kept the SKU same and given we are just migrating a small sample database; we are allocating 128 GB of storage. Below is the target server screenshot once created –
+We used the [QuickStart guide](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal) to create a corresponding PostgreSQL target flexible server. We kept the SKU same and given we are just migrating a small sample database; we are allocating 128 GB of storage. Below is the target server screenshot once created –
 ![flexibleservertarget](./media/flexibleservertargetcreation.png "flexibleservertarget")
 
 ### Step 3 - Setup the pre-requisites
@@ -200,7 +200,7 @@ Ensure that all the pre-requisites are completed before start of migration.
 ![azlogincli](./media/azlogintutorialcli.png "azlogincli")
 ![azsuccesslogin](./media/successazlogincli.png "azsuccesslogin")
 
-* Edit the below placeholders << >> in the JSON lines and store in the local machine as <<filename>>.json where the CLI is being invoked. In this tutorial, we have saved the file in C:\migration-cli\migration_body.json
+* Edit the below placeholders `<< >>` in the JSON lines and store in the local machine as <<filename>>.json where the CLI is being invoked. In this tutorial, we have saved the file in C:\migration-cli\migration_body.json
 
 ```bash
 {
