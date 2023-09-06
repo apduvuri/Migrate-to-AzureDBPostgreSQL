@@ -24,11 +24,11 @@ Get started with the offline migration from on-premises/IaaS to Azure Database f
 
 ## Current Limitations [Preview Mode]
 * After you have subscribed for the private preview, then you can run *only* migrations from IaaS/On-premises to Azure Database for PostgreSQL – Flexible server for that subscription. To migrate from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server in the same subscription, please contact Microsoft team.
-* For the private preview, "North Europe" region is not supported.
+* For the preview, "North Europe" region is not supported.
 * You can have only one active migration to your flexible server.
 * You can select a max of eight databases in one migration attempt. If you've more than eight databases, you must wait for the first migration to be complete before initiating another migration for the rest of the databases. Support for migration of more than eight databases in a single migration will be introduced later.
-* The tool takes care of the migration of data and schema. It doesn't migrate users and roles.
-* The migration tool shows the number of tables copied from source to target server. You need to validate the data in target server post migration.
+* The service doesn't migrate users and roles.
+* Manual validation of the data, PostgreSQL objects in target server post migration.
 * The tool only migrates user databases and not system databases like template_0, template_1.
 * Migration of POSTGIS, TIMESCALEDB, POSTGIS_TOPOLOGY, POSTGIS_TIGER_GEOCODER, PG_PARTMAN extensions are not supported from source to target. 
 * Extensions that are not supported in the Azure Database for PostgreSQL – Flexible server cannot be migrated. Supported extensions in PostgreSQL Flexible server are - [Extensions - Azure Database for PostgreSQL - Flexible Server | Microsoft Learn](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-extensions)
