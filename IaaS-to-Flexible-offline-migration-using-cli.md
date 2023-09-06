@@ -200,7 +200,7 @@ Ensure that all the pre-requisites are completed before start of migration.
 ![azlogincli](./media/azlogintutorialcli.png "azlogincli")
 ![azsuccesslogin](./media/successazlogincli.png "azsuccesslogin")
 
-* Edit the below placeholders `<< >>` in the JSON lines and store in the local machine as <<filename>>.json where the CLI is being invoked. In this tutorial, we have saved the file in C:\migration-cli\migration_body.json
+* Edit the below placeholders `<< >>` in the JSON lines and store in the local machine as `<<filename>>.json` where the CLI is being invoked. In this tutorial, we have saved the file in C:\migration-cli\migration_body.json
 
 ```bash
 {
