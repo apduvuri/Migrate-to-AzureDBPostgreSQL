@@ -58,7 +58,7 @@ The following table can help for setting up the network between source and targe
 * Use the select command in the source to list all the extensions that are being used - `Select * from pg_extensions;`
 * Search for azure.extensions server parameter on the Server parameter blade on your Azure Database for PostgreSQL – Flexible server. Enable the extensions found in the source within the PostgreSQL flexible server.
 
-![Enable extensions](media/az-flexible-server-enable-extensions.png)
+![Enable extensions](https://github.com/apduvuri/IaaS-to-Flexible-Migration/blob/main/media/az-flexible-server-enable-extensions.png)
 
 * Check if the list contains any of the following extensions - 
     * PG_CRON
