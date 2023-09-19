@@ -68,6 +68,8 @@ The following table can help for setting up the network between source and targe
     * PGLOGICAL
     * WAL2JSON
 If yes, go to the server parameters blade and search for shared_preload_libraries parameter. This parameter indicates the set of extension libraries that are preloaded at the server restart.
+:::image type="content" source="media/az-flexible-server-shared_preload-extensions.png" alt-text="Screenshot showing the Shared Preload libraries." lightbox="media/az-flexible-server-shared_preload-extensions.png":::
+
 ![Shared Preload libraries](./media/az-flexible-server-shared_preload-extensions.png "Shared Preload libraries")
 
 ### Users and Roles
