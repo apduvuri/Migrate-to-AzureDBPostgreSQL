@@ -57,7 +57,9 @@ The following table can help for setting up the network between source and targe
 ### Extensions
 * Use the select command in the source to list all the extensions that are being used - `Select * from pg_extensions;`
 * Search for azure.extensions server parameter on the Server parameter blade on your Azure Database for PostgreSQL – Flexible server. Enable the extensions found in the source within the PostgreSQL flexible server.
-![Enable extensions](./media/az-flexible-server-enable-extensions.png "Enable Extensions")
+  
+![Enable extensions](./media/az-flexible-server-enable-extensions.png)
+
 * Check if the list contains any of the following extensions - 
     * PG_CRON
     * PG_HINT_PLAN
@@ -68,9 +70,8 @@ The following table can help for setting up the network between source and targe
     * PGLOGICAL
     * WAL2JSON
 If yes, go to the server parameters blade and search for shared_preload_libraries parameter. This parameter indicates the set of extension libraries that are preloaded at the server restart.
-:::image type="content" source="media/az-flexible-server-shared_preload-extensions.png" alt-text="Screenshot showing the Shared Preload libraries." lightbox="media/az-flexible-server-shared_preload-extensions.png":::
 
-![Shared Preload libraries](./media/az-flexible-server-shared_preload-extensions.png "Shared Preload libraries")
+![Shared Preload libraries](./media/az-flexible-server-shared_preload-extensions.png)
 
 ### Users and Roles
 * The users, different roles must be migrated manually to the Azure Database for PostgreSQL – Flexible server.
