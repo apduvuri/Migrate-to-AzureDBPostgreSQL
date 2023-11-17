@@ -20,7 +20,11 @@ Key benefits of using this service is -
 ## Start your offline migration
 Get started with the offline migration from on-premises/IaaS to Azure Database for PostgreSQL - Flexible server by using one of the following methods:
 
-* [**Using the Azure CLI**](./IaaS-to-Flexible-offline-migration-using-cli.md)
+* [**Using the Azure CLI - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (offline)**](./IaaS-to-Flexible-offline-migration-using-cli.md)
+* [**Using the Azure Portal - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (offline)**](./IaaS-to-Flexible-offline-migration-using-portal.md)
+* [**Using the Azure CLI - Migrate from AWS RDS PostgreSQL to Azure Database for PostgreSQL - Flexible server (offline)**](./AWSRDS-to-Flexible-offline-migration-using-cli.md)
+* [**Using the Azure ARM Template - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (offline)**](./IaaS-to-Flexible-online-migration-using-ARM-Template.md)
+
 
 ## Current Limitations [Preview Mode]
 * After you have subscribed for the private preview, then you can run *only* migrations from IaaS/On-premises to Azure Database for PostgreSQL – Flexible server for that subscription. To migrate from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server in the same subscription, please contact Microsoft team.

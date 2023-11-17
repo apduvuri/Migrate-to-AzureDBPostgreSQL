@@ -1,7 +1,7 @@
 ---
-title: "Tutorial: Offline Migration of Iaas/On-Premises PostgreSQL to Azure Database for PostgreSQL - Flexible Server using the Azure CLI"
+title: "Tutorial: Offline Migration of AWS RDS PostgreSQL to Azure Database for PostgreSQL - Flexible Server using the Azure CLI"
 titleSuffix: "Offline Migration : Azure Database for PostgreSQL Flexible Server"
-description: "Learn about Offline migration of your On-Premises/IaaS PostgreSQL databases to Azure Database for PostgreSQL - Flexible Server by using the Azure CLI."
+description: "Learn about Offline migration of your AWS RDS PostgreSQL databases to Azure Database for PostgreSQL - Flexible Server by using the Azure CLI."
 author: apduvuri
 ms.author: apduvuri
 ms.service: postgresql
@@ -9,12 +9,12 @@ ms.topic: tutorial
 ms.date: 05/09/2023
 ms.custom: seo-lt-2023
 ---
-# Tutorial: Offline migration of On-Premises/IaaS to Azure Database for PostgreSQL - Flexible server using the Azure CLI
+# Tutorial: Offline migration of AWS RDS to Azure Database for PostgreSQL - Flexible server using the Azure CLI
 
 ## Overview
 
-You can migrate the PostgreSQL instance from IaaS/On-Premises to Azure Database for PostgreSQL – Flexible Server using the Azure Command Line Interface (CLI). This document provides the detailed steps to migrate your PostgreSQL instances located in on-premises/Azure VM/IaaS based solutions to Azure Database for PostgreSQL – Flexible Server using CLI based approach.
-We spin up a purpose-built docker container in the target Azure Database for PostgreSQL – Flexible Server and drive the incoming migrations. This docker container spins up on-demand when a migration is initiated from On-premises/IaaS based solutions and gets decommissioned once the migration is completed. The migration container uses a new binary called [pgcopydb](https://github.com/dimitri/pgcopydb) that provides a fast and efficient way of copying databases from one server to another.
+You can migrate the PostgreSQL instance from AWS RDS to Azure Database for PostgreSQL – Flexible Server using the Azure Command Line Interface (CLI). This document provides the detailed steps to migrate your PostgreSQL instances from AWS RDS PostgreSQL to Azure Database for PostgreSQL – Flexible Server using CLI based approach.
+We spin up a purpose-built docker container in the target Azure Database for PostgreSQL – Flexible Server and drive the incoming migrations. This docker container spins up on-demand when a migration is initiated from AWS RDS for PostgreSQL and gets decommissioned once the migration is completed. The migration container uses a new binary called [pgcopydb](https://github.com/dimitri/pgcopydb) that provides a fast and efficient way of copying databases from one server to another.
 
 > [!NOTE]
 > Offline migration CLI based approach is in preview mode.
@@ -49,7 +49,7 @@ Source PostgreSQL version should be >= 9.5
 
 ### Networking
 Networking is required to establish a successful connectivity between source and target.
-* You need to setup Express route/ IP Sec VPN/ VPN tunnelling while connecting your source from on-premises to Azure. Below table provides the networking scenario that can guide you with the connectivity setup
+* You need to setup Express route/ IP Sec VPN/ VPN tunnelling while connecting your source from AWS to Azure. Below table provides the networking scenario that can guide you with the connectivity setup
 
 The following table can help for setting up the network between source and target
 | Source | Target | Connectivity Tips |
@@ -59,7 +59,7 @@ The following table can help for setting up the network between source and targe
 | Public | Private | No action needed. Connectivity should be established automatically. Provided the source is whitelisted in the firewall rules of the target. |
 | Private | Private | You need to establish Express route or IP Sec VPN, or VPN Tunnelling or VNET Peering between source and target. |
 
-* Along with establishing Azure connectivity, check the pg_hba.conf file to ensure the target PostgreSQL flexible server can connect to the source. It requires Source PostgreSQL instance to be restarted.
+* Update the AWS RDS PostgreSQL VPC security groups to ensure the target PostgreSQL flexible server can connect to the source. For more information about VPC security group rules, see the [AWS Security group rules](https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html)
 * To establish Express route - [Azure ExpressRoute Overview: Connect over a private connection | Microsoft Learn](https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction)
 * For setting up IP Sec VPN, you can refer - [About Azure Point-to-Site VPN connections - Azure VPN Gateway | Microsoft Learn](https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-about)
 * For VNET Peering, [Azure Virtual Network peering | Microsoft Learn](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview)
@@ -93,7 +93,7 @@ If yes, go to the server parameters blade and search for shared_preload_librarie
 
 ## Starting with CLI
 The preview comes with a list of easy-to-use CLI commands to perform migration related tasks. All the CLI commands starts with “az postgres flexible-server migration”. There are also help statements provided to assist you in understanding the various options and in framing the right syntax for the CLI commands.
-CLI commands for migrating from On-premises/IaaS to Azure Database for PostgreSQL – Flexible server is almost like the CLI commands used to migrate from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server.
+CLI commands for migrating from AWS RDS PostgreSQL to Azure Database for PostgreSQL – Flexible server is almost like the CLI commands used to migrate from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server.
 At present for offline migration, CLI commands is in GA that supports migration from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server [Tutorial: Migrate Azure Database for PostgreSQL - Single Server to Flexible Server using the Azure CLI - Azure Database for PostgreSQL Flexible Server | Microsoft Learn](https://learn.microsoft.com/en-us/azure/postgresql/migrate/how-to-migrate-single-to-flexible-cli)
 Once the CLI is installed, open the command prompt and login into the azure account using the below command.
 
@@ -193,7 +193,7 @@ In this tutorial, we will be migrating PostgreSQL database residing in Azure VM 
 
 ### Step 1 - Connect to the source
 * In this tutorial, source PostgreSQL version used is 14.8 and it is installed in one of the Azure VM with operating system as Ubuntu.
-* Source PostgreSQL instance contains around 10 databases and for this tutorial we are going to migrate "ticketdb","timedb","salesdb" and "postgres" into Azure Database for PostgreSQL – Flexible server.
+* Source PostgreSQL instance contains around 10 databases and for this tutorial we are going to migrate “testdb3, testdb6, and testschema” into Azure Database for PostgreSQL – Flexible server.
 
 ![azmigrationsource](media/az_migration_source_cli.png)
 
@@ -226,7 +226,7 @@ Ensure that all the pre-requisites are completed before start of migration.
 ```bash
 {
 "properties": {
-"SourceDBServerResourceId": "<<hostname or IP address>>:<<port>>@<<username>>",
+"SourceDBServerResourceId": "<<AWS RDS host name>>:<<port>>@<<username>>",
 		"SecretParameters": {
 			"AdminCredentials": {
 				"SourceServerPassword": "<<Source Password>>",
@@ -235,7 +235,7 @@ Ensure that all the pre-requisites are completed before start of migration.
 		},
      "targetServerUserName":"<<Target username>>",
 		"DBsToMigrate": [
-			<< comma separated list of databases like - "ticketdb","timedb","salesdb" >>
+			<< comma separated list of databases like -"ticketdb","timedb","salesdb" >>
 		],
 		"OverwriteDBsInTarget": "true",
 		"MigrationMode": "Offline"
