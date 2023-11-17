@@ -27,8 +27,6 @@ Get started with the offline migration from on-premises/IaaS to Azure Database f
 
 
 ## Current Limitations [Preview Mode]
-* After you have subscribed for the private preview, then you can run *only* migrations from IaaS/On-premises to Azure Database for PostgreSQL – Flexible server for that subscription. To migrate from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server in the same subscription, please contact Microsoft team.
-* For the preview, "North Europe" region is not supported.
 * You can have only one active migration to your flexible server.
 * You can select a max of eight databases in one migration attempt. If you've more than eight databases, you must wait for the first migration to be complete before initiating another migration for the rest of the databases. Support for migration of more than eight databases in a single migration will be introduced later.
 * The service doesn't migrate users and roles.
