@@ -192,10 +192,11 @@ Different states and sub-states supported within show command
 In this tutorial, we will be migrating PostgreSQL database residing in Azure VM with public access to Azure Database for PostgreSQL – Flexible server using Azure CLI.
 
 ### Step 1 - Connect to the source
-* In this tutorial, source PostgreSQL version used is 14.8 and it is installed in one of the Azure VM with operating system as Ubuntu.
-* Source PostgreSQL instance contains around 10 databases and for this tutorial we are going to migrate “testdb3, testdb6, and testschema” into Azure Database for PostgreSQL – Flexible server.
+* In this tutorial, source AWS RDS PostgreSQL version used is 13.13.
 
-![azmigrationsource](media/az_migration_source_cli.png)
+* Source PostgreSQL instance contains around 5 databases and for this tutorial we are going to migrate "ticketdb, timedb, and inventorydb” into Azure Database for PostgreSQL – Flexible server.
+
+![azmigrationsource](media/awsrds_offline_source_db.png)
 
 ### Step 2 - Create target Azure Database for PostgreSQL – Flexible server
 We used the [QuickStart guide](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal) to create a corresponding PostgreSQL target flexible server. We kept the SKU same and given we are just migrating a small sample database; we are allocating 128 GB of storage. Below is the target server screenshot once created –
@@ -205,9 +206,9 @@ We used the [QuickStart guide](https://learn.microsoft.com/en-us/azure/postgresq
 ### Step 3 - Setup the pre-requisites
 Ensure that all the pre-requisites are completed before start of migration.
 * Networking establishment between source and target.
-* For this tutorial, we have modified the pg_hba.conf file in the source
+* For this tutorial, we have modified the VPC security groups in the source
 
-![pghba](media/pg_hbaconf.png)
+![pghba](media/awsrds_offline_hba_network.png)
 
 * Azure CLI environment and all the appropriate defaults are setup.
 * Extensions are allowed listed and included in shared-load libraries.
@@ -235,7 +236,7 @@ Ensure that all the pre-requisites are completed before start of migration.
 		},
      "targetServerUserName":"<<Target username>>",
 		"DBsToMigrate": [
-			<< comma separated list of databases like -"ticketdb","timedb","salesdb" >>
+			<< comma separated list of databases like -"ticketdb","timedb","inventorydb" >>
 		],
 		"OverwriteDBsInTarget": "true",
 		"MigrationMode": "Offline"
@@ -252,17 +253,19 @@ az postgres flexible-server migration list --subscription <<subscription ID>> --
 '''bash
 az postgres flexible-server migration create --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Unique Migration Name>> --properties "C:\migration-cli\migration_body.json"
 '''
-![createcli](media/createmigrationcli.png)
+![createcli](media/awsrds_offline_createmigrationcli.png)
 
 * Run the following command to get the status of the migration that got initiated in the previous step. You can check the status of the migration by providing the migration name
 '''bash
 az postgres flexible-server migration show --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Migration ID>>
 '''
-![showcli](media/showmigrationcli.png)
+![showcli](media/awsrds_offline_migration_show.png)
 
 * You can also see the status in the Azure Database for PostgreSQL – Flexible server portal
 
-![statusmigration](media/statusmigrationportal.png)
+![monitormigration](media/awsrds_offline_monitor_migration.png)
+
+![migrationmonitor](media/awsrds_offline_monitor2.png)
 
 ### Step 5 - Post Migration
 After successful completion of the databases, you need to manually validate the data between source and target and verify all the objects in the target database has been successfully created.
