@@ -41,4 +41,4 @@ Get started with the offline migration from on-premises/IaaS/AWS to Azure Databa
     * Create casts
     * Creation of FTS parsers and FTS templates
     * Users with superuser roles
-    * `SSLMODE=prefer` is the only mode supported for migration. Different SSLMODE like require, disable, verify-full will be supported in the future releases.
+    * `SSLMODE values supported are prefer, require` for migration. Different SSLMODE like verify-ca, verify-full will be supported in the future releases.
