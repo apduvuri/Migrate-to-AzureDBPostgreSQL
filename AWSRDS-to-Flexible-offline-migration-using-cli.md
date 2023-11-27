@@ -14,7 +14,7 @@ ms.custom: seo-lt-2023
 ## Overview
 
 You can migrate the PostgreSQL instance from AWS RDS to Azure Database for PostgreSQL – Flexible Server using the Azure Command Line Interface (CLI). This document provides the detailed steps to migrate your PostgreSQL instances from AWS RDS PostgreSQL to Azure Database for PostgreSQL – Flexible Server using CLI based approach.
-We spin up a purpose-built docker container in the target Azure Database for PostgreSQL – Flexible Server and drive the incoming migrations. This docker container spins up on-demand when a migration is initiated from AWS RDS for PostgreSQL and gets decommissioned once the migration is completed. The migration container uses a new binary called [pgcopydb](https://github.com/dimitri/pgcopydb) that provides a fast and efficient way of copying databases from one server to another.
+We spin up a purpose-built docker container in the target Azure Database for PostgreSQL – Flexible Server and drive the incoming migrations. This docker container spins up on-demand when a migration is initiated from AWS RDS for PostgreSQL and gets decommissioned once the migration is completed. The migration container leverages [pgcopydb](https://github.com/dimitri/pgcopydb) that provides a fast and efficient way of copying databases from one server to another.
 
 > [!NOTE]
 > Offline migration CLI based approach is in preview mode.
@@ -65,7 +65,7 @@ The following table can help for setting up the network between source and targe
 * For VNET Peering, [Azure Virtual Network peering | Microsoft Learn](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview)
 
 ### Extensions
-* Use the select command in the source to list all the extensions that are being used - `Select * from pg_extensions;`
+* Use the select command in the source to list all the extensions that are being used - `select extname,extversion from pg_extension;`
 * Search for azure.extensions server parameter on the Server parameter blade on your Azure Database for PostgreSQL – Flexible server. Enable the extensions found in the source within the PostgreSQL flexible server.
 
 ![Enable extensions](media/az-flexible-server-enable-extensions.png)
@@ -84,7 +84,7 @@ If yes, go to the server parameters blade and search for shared_preload_librarie
 ![Shared Preload libraries](media/az-flexible-server-shared_preload-extensions.png)
 
 ### Users and Roles
-* The users, different roles must be migrated manually to the Azure Database for PostgreSQL – Flexible server.
+* The users, different roles must be migrated manually to the Azure Database for PostgreSQL – Flexible server. For migrating users and roles you can use `pg_dumpall --globals-only -U <<username> -f <<filename>>.sql`.
 * Azure Database for PostgreSQL – Flexible server does not support any superuser, users having roles of superuser needs to be removed before migration.
 
 ### Server Parameters
