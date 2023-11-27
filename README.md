@@ -13,7 +13,6 @@ Key benefits of using this service is -
 * Simple to use portal-based migration experience.
 * Fast offline migration service.
 * No limitations in terms of size of databases it can handle.
-* Automatically, spin up a purpose-built docker container in the target Azure Database for PostgreSQL - Flexible server and drive the incoming migrations.
 * Support for Schema and Data migrations
 
 
@@ -27,7 +26,6 @@ Get started with the offline migration from on-premises/IaaS/AWS to Azure Databa
 
 
 ## Current Limitations [Preview Mode]
-* You can have only one active migration to your flexible server.
 * You can select a max of eight databases in one migration attempt. If you've more than eight databases, you must wait for the first migration to be complete before initiating another migration for the rest of the databases. Support for migration of more than eight databases in a single migration will be introduced later.
 * The service doesn't migrate users and roles.
 * Manual validation of the data, PostgreSQL objects in target server post migration.
