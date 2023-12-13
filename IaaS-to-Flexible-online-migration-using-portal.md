@@ -43,6 +43,9 @@ In this document, you will learn to -
   ```
 * For more information on wal2json, refer this link [Details on wal2json](https://github.com/eulerto/wal2json)
 
+> [!NOTE]
+> Wal2json needs to be installed from the github source code and not from the yum or apt repository
+
 ### Target Setup
 
 * Before starting the migration, Azure Database for PostgreSQL – Flexible server must be created. 
@@ -51,6 +54,14 @@ In this document, you will learn to -
  
 ### Source version
 Source PostgreSQL version should be >= 9.5
+
+### Enabling CDC as source
+* wal2json logical decoding plugin is used to capture the changed records from the source.
+* In the source PostgreSQL instance, set the following parameters and values in the `postgresql.conf` configuration file:
+    * Set `wal_level = logical`
+    * Set `max_replication_slots` to a value greater than 1, the value should be equal to greater than the number of databases selected for migration.
+    * Set `max_wal_senders` to a value greater than 1, should be set to at least the same as `max_replication_slots`, plus the number of senders already used on your instance.
+    * The `wal_sender_timeout` parameter ends replication connections that are inactive longer than the specified number of milliseconds. The default for an on-premises PostgreSQL database is `60000 milliseconds (60 seconds)`. Setting the value to 0 (zero) disables the timeout mechanism and is a valid setting for migration.
 
 ### Networking
 Networking is required to establish a successful connectivity between source and target.
