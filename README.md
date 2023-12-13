@@ -23,6 +23,8 @@ Get started with the offline migration from on-premises/IaaS/AWS to Azure Databa
 * [**Using the Azure Portal - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (offline)**](./IaaS-to-Flexible-offline-migration-using-portal.md)
 * [**Using the Azure CLI - Migrate from AWS RDS PostgreSQL to Azure Database for PostgreSQL - Flexible server (offline)**](./AWSRDS-to-Flexible-offline-migration-using-cli.md)
 * [**Using the Azure ARM Template - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (offline)**](./IaaS-to-Flexible-offline-migration-using-ARM-Template.md)
+* [**Using the Azure CLI - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (online)**](./IaaS-to-Flexible-online-migration-using-cli.md)
+* [**Using the Azure Portal - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (online)**](./IaaS-to-Flexible-online-migration-using-portal.md)
 
 
 ## Current Limitations [Preview Mode]
