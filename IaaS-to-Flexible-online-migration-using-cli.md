@@ -163,6 +163,8 @@ You need to provide a JSON file with the absolute path as parameter while initia
 | `dbsToMigrate` | Specify the list of databases that you want to migrate to Flexible Server. You can include a maximum of eight database names at a time. Providing the list of DB’s in array format. |
 | `OverwriteDBsInTarget` | When set to true (default), if the target server happens to have an existing database with the same name as the one you're trying to migrate, migration tool automatically overwrites the database |
 | `MigrationMode` | Mode of the migration. Supported value is "Offline" |
+| `sourceType` | Required parameter. Values can be - OnPremises, AWS, AzureVM, PostgreSQLSingleServer |
+| `sslMode` | SSL modes for migration. SSL mode for PostgreSQLSingleServer is VerifyFull and Prefer/Require for other source types |
 
 ### list
 The list command lists all the migration attempts made to a Azure Database for PostgreSQL – Flexible server target.
@@ -279,7 +281,9 @@ Ensure that all the pre-requisites are completed before start of migration.
 			<< comma separated list of databases like - "ticketdb","timedb","salesdb" >>
 		],
 		"OverwriteDBsInTarget": "true",
-		"MigrationMode": "Online"
+		"MigrationMode": "Online",
+    "sourceType": "OnPremises",
+    "sslMode": "Prefer"
 	}
 }
 ```
