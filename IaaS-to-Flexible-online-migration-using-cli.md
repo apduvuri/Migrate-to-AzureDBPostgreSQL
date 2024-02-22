@@ -1,7 +1,7 @@
 ---
-title: "Tutorial: Offline Migration of Iaas/On-Premises PostgreSQL to Azure Database for PostgreSQL - Flexible Server using the Azure CLI"
-titleSuffix: "Offline Migration : Azure Database for PostgreSQL Flexible Server"
-description: "Learn about Offline migration of your On-Premises/IaaS PostgreSQL databases to Azure Database for PostgreSQL - Flexible Server by using the Azure CLI."
+title: "Tutorial: Online Migration of Iaas/On-Premises PostgreSQL to Azure Database for PostgreSQL - Flexible Server using the Azure CLI"
+titleSuffix: "Online Migration : Azure Database for PostgreSQL Flexible Server"
+description: "Learn about Online migration of your On-Premises/IaaS PostgreSQL databases to Azure Database for PostgreSQL - Flexible Server by using the Azure CLI."
 author: apduvuri
 ms.author: apduvuri
 ms.service: postgresql
