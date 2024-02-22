@@ -9,7 +9,7 @@ ms.topic: tutorial
 ms.date: 05/09/2023
 ms.custom: seo-lt-2023
 ---
-# Tutorial: Offline migration of On-Premises/IaaS to Azure Database for PostgreSQL - Flexible server using the Azure CLI
+# Tutorial: Online migration of On-Premises/IaaS to Azure Database for PostgreSQL - Flexible server using the Azure CLI
 
 ## Overview
 
