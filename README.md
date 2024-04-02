@@ -25,14 +25,26 @@ The Migration Runtime Server is a specialized feature within the [migration serv
 
 Get started with the offline migration from on-premises/IaaS/AWS to Azure Database for PostgreSQL - Flexible server by using one of the following methods:
 
-- [**Using the Azure ARM Template - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (offline)**](migration-service-Azure-DB-PostgreSQL/Offline-Migrations/IaaS-to-Flexible-offline-migration-using-ARM-Template.md)
+- [**Using the Azure ARM Template - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (Offline)**](migration-service-Azure-DB-PostgreSQL/Offline-Migrations/IaaS-to-Flexible-offline-migration-using-ARM-Template.md)
 
 ## Start your online migration
 
+- Sign in to the Azure Portal at https://portal.azure.com.
+- Search for "Preview features" in the Azure portal search bar.
+
+![Go to preview features](migration-service-Azure-DB-PostgreSQL/media/readme_images/enable-preview-features.png)
+
+- In the Preview features section, provide your Azure subscription details.
+- Choose Microsoft.DBforPostgreSQL as the type.
+- Select "Online migration for migration service in Azure Database for PostgreSQL" from the list.
+- Click "Register" to get the access to the preview feature.
+
+![Select Preview Feature](migration-service-Azure-DB-PostgreSQL/media/readme_images/enable-online-migration.png)
+
 Get started with the online migration from on-premises/IaaS/AWS to Azure Database for PostgreSQL - Flexible server by using one of the following methods:
 
-- [**Using the Azure CLI - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (online)**](migration-service-Azure-DB-PostgreSQL/Online-Migrations/IaaS-to-Flexible-online-migration-using-cli.md)
-- [**Using the Azure Portal - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (online)**](migration-service-Azure-DB-PostgreSQL/Online-Migrations/IaaS-to-Flexible-online-migration-using-portal.md)
+- [**Using the Azure CLI - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (Online)**](migration-service-Azure-DB-PostgreSQL/Online-Migrations/IaaS-to-Flexible-online-migration-using-cli.md)
+- [**Using the Azure Portal - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (Online)**](migration-service-Azure-DB-PostgreSQL/Online-Migrations/IaaS-to-Flexible-online-migration-using-portal.md)
 
 
 ## Current Limitations [Preview Mode]
