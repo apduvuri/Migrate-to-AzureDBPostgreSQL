@@ -13,7 +13,7 @@ ms.custom: seo-lt-2023
 
 ## Overview
 
-You can migrate the PostgreSQL instance from IaaS/On-Premises to Azure Database for PostgreSQL – Flexible Server using the Azure ARM Template. This document provides the detailed steps to migrate your PostgreSQL instances located in on-premises/Azure VM/IaaS based solutions to Azure Database for PostgreSQL – Flexible Server using custom ARM template based approach.
+You can migrate the PostgreSQL instance from Azure Database for PostgreSQL - Single server, AWS RDS, IaaS/On-Premises to Azure Database for PostgreSQL – Flexible Server using the Azure ARM Template. This document provides the detailed steps to migrate your PostgreSQL instances located in on-premises/Azure VM/IaaS based solutions to Azure Database for PostgreSQL – Flexible Server using custom ARM template based approach.
 We spin up a purpose-built docker container in the target Azure Database for PostgreSQL – Flexible Server and drive the incoming migrations. This docker container spins up on-demand when a migration is initiated from On-premises/IaaS based solutions and gets decommissioned once the migration is completed. The migration container leverages [pgcopydb](https://github.com/dimitri/pgcopydb) that provides a fast and efficient way of copying databases from one server to another.
 
 > [!NOTE]
@@ -58,7 +58,7 @@ The following table can help for setting up the network between source and targe
 * Use the select command in the source to list all the extensions that are being used - `select extname,extversion from pg_extension;`
 * Search for azure.extensions server parameter on the Server parameter blade on your Azure Database for PostgreSQL – Flexible server. Enable the extensions found in the source within the PostgreSQL flexible server.
 
-![Enable extensions](media/az-flexible-server-enable-extensions.png)
+![Enable extensions](../media/az-flexible-server-enable-extensions.png)
 
 * Check if the list contains any of the following extensions - 
     * PG_CRON
@@ -71,7 +71,7 @@ The following table can help for setting up the network between source and targe
     * WAL2JSON
 If yes, go to the server parameters blade and search for shared_preload_libraries parameter. This parameter indicates the set of extension libraries that are preloaded at the server restart.
 
-![Shared Preload libraries](media/az-flexible-server-shared_preload-extensions.png)
+![Shared Preload libraries](../media/az-flexible-server-shared_preload-extensions.png)
 
 ### Users and Roles
 * The users, different roles must be migrated manually to the Azure Database for PostgreSQL – Flexible server. For migrating users and roles you can use `pg_dumpall --globals-only -U <<username> -f <<filename>>.sql`.
@@ -89,13 +89,13 @@ For performing migrations, you can use the provided JSON file and create the mig
 1. In a web browser, go to the [Azure portal](https://portal.azure.com/) and sign in.
 
 1. From the Azure portal search bar, search for **deploy a custom template** and then select it from the available options.
-   ![ARM Template search](media/offline_arm_template_search.png)
+   ![ARM Template search](../media/offline_arm_template_search.png)
 
 1. select **Build your own template in the editor**.
-   ![ARM Template build](media/offline_arm_template_build.png)
+   ![ARM Template build](../media/offline_arm_template_build.png)
 
 1. You see a blank template.
-   ![ARM Template blank](media/offline_arm_template_blank.png)
+   ![ARM Template blank](../media/offline_arm_template_blank.png)
 
 1. Replace the blank template with the following template. It will initiate the migration in the respective Flexible server.
 ```bash
@@ -254,16 +254,16 @@ For performing migrations, you can use the provided JSON file and create the mig
 1. Select **Save**.
 
 1. You see the blade for providing deployment values. Again, select **myResourceGroup** for the resource group. You can use the other default values. When you're done providing values, select **Review + create**
-  ![ARM Template Form](media/offline_arm_template_form.png)
+  ![ARM Template Form](../media/offline_arm_template_form.png)
 
 1. After the portal validates the template, select **Create**.
-   ![ARM Template Form](media/offline_arm_template_create.png)
+   ![ARM Template Form](../media/offline_arm_template_create.png)
 
 1. When the deployment completes, you see the status of the deployment. If it is successful go to the respective target.
-   ![ARM Template Form](media/offline_arm_template_deployment.png)
+   ![ARM Template Form](../media/offline_arm_template_deployment.png)
 
 1. Once the deployment is successful, go to the respective Azure Database for PostgreSQL - Flexible server [target] and select Migration in the left pane. You can see the migration status in progress.
-   ![ARM Template Form](media/offline_arm_template_migration_status.png)
+   ![ARM Template Form](../media/offline_arm_template_migration_status.png)
 
 1. In the ARM template, we have selected the migration option as **Migrate and Validate**. In this scenario, validations are performed first before migration starts. After the **PerformingPreRequisiteSteps** sub state is completed, the workflow moves into the sub state of **Validation in Progress**.
 
@@ -271,7 +271,7 @@ For performing migrations, you can use the provided JSON file and create the mig
 - If validation completes without any error, the migration will start and the workflow will move into the sub state of **Migrating Data**. 
 
 You can see the results of validation under the **Validation** tab and monitor the migration under the **Migration** tab.
-![ARM Template Form](media/offline_arm_template_migration_success.png)
+![ARM Template Form](../media/offline_arm_template_migration_success.png)
 
 Possible migration states include:
 

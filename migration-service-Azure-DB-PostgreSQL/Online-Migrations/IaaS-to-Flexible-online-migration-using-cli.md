@@ -21,22 +21,8 @@ The migration service is currently exposed through easy-to-use Azure CLI command
 
 ## Pre-Requisites
 
-### Installing wal2json
-* wal2json is an output plugin logical decoding and is used for identifying the CDC changes.
-* Latest code of wal2json needs to be installed in the source PostgreSQL.
-* Following are the steps to install wal2json in unix based operating systems -
-  ```bash
-  $ git clone https://github.com/eulerto/wal2json.git
-  $ cd wal2json
-  # Make sure your path includes the bin directory that contains the correct `pg_config`
-  $ PATH=/path/to/pg/bin:$PATH
-  $ USE_PGXS=1 make
-  $ USE_PGXS=1 make install
-  ```
-* For more information on wal2json, refer this link [Details on wal2json](https://github.com/eulerto/wal2json)
-
-> [!NOTE]
-> Wal2json needs to be installed from the github source code and not from the yum or apt repository
+### Installing test_decoding
+* test_decoding is an output plugin logical decoding and is used for identifying the CDC changes.
     
 ### Azure CLI Setup
 
@@ -83,7 +69,7 @@ The following table can help for setting up the network between source and targe
 * Use the select command in the source to list all the extensions that are being used - `select extname,extversion from pg_extension;`
 * Search for azure.extensions server parameter on the Server parameter blade on your Azure Database for PostgreSQL – Flexible server. Enable the extensions found in the source within the PostgreSQL flexible server.
 
-![Enable extensions](media/az-flexible-server-enable-extensions.png)
+![Enable extensions](../media/az-flexible-server-enable-extensions.png)
 
 * Check if the list contains any of the following extensions - 
     * PG_CRON
@@ -96,7 +82,7 @@ The following table can help for setting up the network between source and targe
     * WAL2JSON
 If yes, go to the server parameters blade and search for shared_preload_libraries parameter. This parameter indicates the set of extension libraries that are preloaded at the server restart.
 
-![Shared Preload libraries](media/az-flexible-server-shared_preload-extensions.png)
+![Shared Preload libraries](../media/az-flexible-server-shared_preload-extensions.png)
 
 ### Users and Roles
 * The users, different roles must be migrated manually to the Azure Database for PostgreSQL – Flexible server. For migrating users and roles you can use `pg_dumpall --globals-only -U <<username> -f <<filename>>.sql`.
@@ -115,7 +101,7 @@ Once the CLI is installed, open the command prompt and login into the azure acco
 Example with Windows command prompt - 
 `az login`
 
-![azlogin CLI](media/azlogin_cli.png)
+![azlogin CLI](../media/azlogin_cli.png)
 
 ## Commands
 Let us take a deep dive of the CLI commands.
@@ -123,14 +109,14 @@ Let us take a deep dive of the CLI commands.
 ### help
 Command ```az postgres flexible-server migration –-help``` will provide the name and the corresponding verbs that are supported in preview. 
 
-![azmigrationhelpcli](media/az_flexible_migration_help_cli.png)
+![azmigrationhelpcli](../media/az_flexible_migration_help_cli.png)
 
 ### create
 The create command helps in creating a migration from a source server to target server.
 
 The help command will allow users to understand the different arguments used for creating and initiating the migration `az postgres flexible-server migration create --help`
 
-![azmigrationcreatehelpcli](media/az_flexible_migration_help_create_cli.png)
+![azmigrationcreatehelpcli](../media/az_flexible_migration_help_create_cli.png)
 
 Example - 
 ```bash
@@ -238,19 +224,19 @@ In this tutorial, we will be migrating PostgreSQL database residing in Azure VM 
 * In this tutorial, source PostgreSQL version used is 14.8 and it is installed in one of the Azure VM with operating system as Ubuntu.
 * Source PostgreSQL instance contains around 10 databases and for this tutorial we are going to migrate "ticketdb","timedb","salesdb" and "postgres" into Azure Database for PostgreSQL – Flexible server.
 
-![azmigrationsource](media/az_migration_source_cli.png)
+![azmigrationsource](../media/az_migration_source_cli.png)
 
 ### Step 2 - Create target Azure Database for PostgreSQL – Flexible server
 We used the [QuickStart guide](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal) to create a corresponding PostgreSQL target flexible server. We kept the SKU same and given we are just migrating a small sample database; we are allocating 128 GB of storage. Below is the target server screenshot once created –
 
-![flexibleservertarget](media/flexibleservertargetcreation.png)
+![flexibleservertarget](../media/flexibleservertargetcreation.png)
 
 ### Step 3 - Setup the pre-requisites
 Ensure that all the pre-requisites are completed before start of migration.
 * Networking establishment between source and target.
 * For this tutorial, we have modified the pg_hba.conf file in the source.
 
-![pghba](media/pg_hbaconf.png)
+![pghba](../media/pg_hbaconf.png)
 
 * Azure CLI environment and all the appropriate defaults are setup.
 * Extensions are allowed listed and included in shared-load libraries.
@@ -260,9 +246,9 @@ Ensure that all the pre-requisites are completed before start of migration.
 ### Step 4 - Perform migration using CLI
 * Open the command prompt and login into the Azure using `az login` command
 
-![azlogincli](media/azlogintutorialcli.png)
+![azlogincli](../media/azlogintutorialcli.png)
 
-![azsuccesslogin](media/successazlogincli.png)
+![azsuccesslogin](../media/successazlogincli.png)
 
 * Edit the below placeholders `<< >>` in the JSON lines and store in the local machine as `<<filename>>.json` where the CLI is being invoked. In this tutorial, we have saved the file in C:\migration-cli\migration_body.json
 
@@ -291,23 +277,23 @@ Ensure that all the pre-requisites are completed before start of migration.
 '''bash
 az postgres flexible-server migration list --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --filter All
 '''
-![listcli](media/listcli.png)
+![listcli](../media/listcli.png)
 
 * In the above steps, there are no migrations performed so we will start with the new migration by running the following command –
 '''bash
 az postgres flexible-server migration create --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Unique Migration Name>> --properties "C:\migration-cli\migration_body.json"
 '''
-![createcli](media/createmigrationcli.png)
+![createcli](../media/createmigrationcli.png)
 
 * Run the following command to get the status of the migration that got initiated in the previous step. You can check the status of the migration by providing the migration name
 '''bash
 az postgres flexible-server migration show --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Migration ID>>
 '''
-![showcli](media/showmigrationcli.png)
+![showcli](../media/showmigrationcli.png)
 
 * You can also see the status in the Azure Database for PostgreSQL – Flexible server portal
 
-![statusmigration](media/statusmigrationportal.png)
+![statusmigration](../media/statusmigrationportal.png)
 
 ### Step 5 - Post Migration
 After successful completion of the databases, you need to manually validate the data between source and target and verify all the objects in the target database has been successfully created.

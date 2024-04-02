@@ -84,7 +84,7 @@ The following table can help for setting up the network between source and targe
 * Use the select command in the source to list all the extensions that are being used - `select extname,extversion from pg_extension;`
 * Search for azure.extensions server parameter on the Server parameter blade on your Azure Database for PostgreSQL – Flexible server. Enable the extensions found in the source within the PostgreSQL flexible server.
 
-![Enable extensions](media/az-flexible-server-enable-extensions.png)
+![Enable extensions](../media/az-flexible-server-enable-extensions.png)
 
 * Check if the list contains any of the following extensions - 
     * PG_CRON
@@ -97,7 +97,7 @@ The following table can help for setting up the network between source and targe
     * WAL2JSON
 If yes, go to the server parameters blade and search for shared_preload_libraries parameter. This parameter indicates the set of extension libraries that are preloaded at the server restart.
 
-![Shared Preload libraries](media/az-flexible-server-shared_preload-extensions.png)
+![Shared Preload libraries](../media/az-flexible-server-shared_preload-extensions.png)
 
 ### Users and Roles
 * The users, different roles must be migrated manually to the Azure Database for PostgreSQL – Flexible server. For migrating users and roles you can use `pg_dumpall --globals-only -U <<username> -f <<filename>>.sql`.
@@ -114,11 +114,11 @@ The migration tool comes with a simple, wizard-based experience on the Azure por
 2. Go to your Azure Database for PostgreSQL Flexible Server target.
 
 3. In the **Overview** tab of the Flexible Server, on the left menu, scroll down to **Migration** and select it. 
-![migrationselection](media/offline_portal_select_migration_pane.png)
+![migrationselection](../media/offline_portal_select_migration_pane.png)
 
 4. Select the **Create** button to start a migration from On-Premises/Azure VM to Flexible Server. If this is the first time you're using the migration tool, an empty grid appears with a prompt to begin your first migration.
 
-  ![createmigration](media/portal_offline_create_migration.png)
+  ![createmigration](../media/portal_offline_create_migration.png)
 
   If you've already created migrations to your Flexible Server target, the grid contains information about migrations that were attempted.
 
@@ -126,7 +126,7 @@ The migration tool comes with a simple, wizard-based experience on the Azure por
 
 ### Setup
 The first tab is the setup tab where user needs to provide migration details like migration name, source type to initiate the migrations
- ![setupmigration](media/portal_online_setup_migration.png)
+ ![setupmigration](../media/portal_online_setup_migration.png)
 
 **Migration name** is the unique identifier for each migration to this Flexible Server target. This field accepts only alphanumeric characters and doesn't accept any special characters except a hyphen (-). The name can't start with a hyphen and should be unique for a target server. No two migrations to the same Flexible Server target can have the same name.
 
@@ -146,7 +146,7 @@ Select the **Next : Connect to source** button.
 ### Connect to Source
 
 The **Connect to Source** tab prompts you to give details related to the source selected in the **Setup Tab** that is the source of the databases.
-![connectsourcemigration](media/portal_offline_connectsource_migration.png)
+![connectsourcemigration](../media/portal_offline_connectsource_migration.png)
 
 **Server Name** - Provide the Hostname or the IP address os the source PostgreSQL instance
 **Port** - Port number of the Source server
@@ -161,7 +161,7 @@ After the successful test connection, select the **Next: Select Migration target
 
 The **select migration target** tab displays metadata for the Flexible Server target, like subscription name, resource group, server name, location, and PostgreSQL version.
  
-![connecttargetmigration](media/portal_offline_connecttarget_migration.png)
+![connecttargetmigration](../media/portal_offline_connecttarget_migration.png)
 
 
 **Admin username** - Admin username of the target PostgreSQL server
@@ -174,7 +174,7 @@ After the successful test connection, select the **Next: Select Database(s) for 
 
 Under this tab, there is a list of user databases inside the source server selected in the setup tab. You can select and migrate up to eight databases in a single migration attempt. If there are more than eight user databases, the migration process is repeated between the source and target servers for the next set of databases.
 
-![FetchDBmigration](media/portal_offline_fetchdb_migration.png)
+![FetchDBmigration](../media/portal_offline_fetchdb_migration.png)
 
 Post selecting the databases, select the **Next:Summary**
 
@@ -182,12 +182,12 @@ Post selecting the databases, select the **Next:Summary**
 
 The **Summary** tab summarizes all the source and target details for creating the validation or migration. Review the details and click on the start button.
 
-![Summarymigration](media/portal_offline_summary_migration.png)
+![Summarymigration](../media/portal_offline_summary_migration.png)
 
 ### Monitor the migration
 
 After you click the start button, a notification appears in a few seconds to say that the validation or migration creation is successful. You are redirected automatically to the **Migration** blade of Flexible Server. This has a new entry for the recently created validation or migration.
-![Monitormigration](media/portal_offline_monitor_migration.png)
+![Monitormigration](../media/portal_offline_monitor_migration.png)
 
 The grid that displays the migrations has these columns: **Name**, **Status**,  **Migration mode**, **Migration type**, **Source server**, **Source server type**, **Databases**, **Duration** and **Start time**. The entries are displayed in the descending order of the start time with the most recent entry on the top. You can use the refresh button to refresh the status of the validation or migration.
 You can also select the migration name in the grid to see the associated details.
@@ -201,8 +201,8 @@ In the Setup tab, we have selected the migration option as **Migrate and Validat
 
 You can see the results of validation under the **Validation** tab and monitor the migration under the **Migration** tab.
 
-![validationmigration](media/portal_offline_validation_migration.png)
-![detailsmigration](media/portal_offline_details_migration.png)
+![validationmigration](../media/portal_offline_validation_migration.png)
+![detailsmigration](../media/portal_offline_details_migration.png)
 
 
 Possible migration states include:
@@ -227,15 +227,15 @@ In case of both **Migrate** as well as **Validate and Migrate**, completion of t
 Before initiating cutover, it's important to ensure that:
 
 * Writes to the source are stopped - `Latency (minutes)` parameter is 0 or close to 0 The `Latency (minutes)` information can be obtained from the migration details screen as shown below:
-![cutovermigration](media/portal_online_cutover_migration.png)
+![cutovermigration](../media/portal_online_cutover_migration.png)
 
 * `Latency (minutes)` parameter indicates when the target last synced up with the source. For example, for the salesdb database above, it's 0.33333. It means that the changes that occurred in the last ~0.3 minutes at the source are yet to be synced to the target, for the salesdb Database. At this point, writes to the source can be stopped and cutover initiated. In case there's heavy traffic at the source, it's recommended to stop writes first so that `Latency (minutes)` can come close to 0 and then cutover is initiated. The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero Latency, the replication stops until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it's recommended that the latency goes to zero or near zero, before triggering the cutover.
 
-![confirmcutovermigration](media/portal_online_confirm_cutover.png)
+![confirmcutovermigration](../media/portal_online_confirm_cutover.png)
 
 * The migration moves to the `Succeeded` state as soon as the `Migrating Data` substate or the cutover (in Online migration) finishes successfully. If there's a problem at the `Migrating Data` substate, the migration moves into a `Failed` state.
 
-![successmigration](media/portal_online_successful_migration.png)
+![successmigration](../media/portal_online_successful_migration.png)
 
 
 ## Cancel the migration
