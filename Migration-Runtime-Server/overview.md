@@ -18,7 +18,7 @@ The Migration Runtime Server is a specialized feature within the [migration serv
 
 The migration runtime server is particularly useful in scenarios where both the source PostgreSQL instances and the target Azure Database for PostgreSQL Flexible Server are configured to communicate over private endpoints or private IPs, ensuring that the migration occurs within a secure and isolated network space. The Migration Runtime Server handles the data transfer, connecting to the source PostgreSQL instance to retrieve data and then pushing it to the target server.
 
-The migration runtime server server is distinct from the target server and is specifically configured to handle the data transfer process, ensuring a secure and efficient migration path.
+The migration runtime server is distinct from the target server and is specifically configured to handle the data transfer process, ensuring a secure and efficient migration path.
 
 > [!NOTE]
 > Migration runtime server using Azure portal experience is in preview mode.
