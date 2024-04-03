@@ -1,12 +1,18 @@
-# Migrate Azure Database for PostgreSQL - Single server/IaaS/On-Premises/AWS PostgreSQL instances to Azure Database for PostgreSQL - Flexible server
+# Migrate PostgreSQL instances to Azure Database for PostgreSQL - Flexible server
+
+## About Azure Database for PostgreSQL - Flexible server
 
 Azure Database for PostgreSQL - Flexible Server is a fully managed database service designed to provide more granular control and flexibility over database management functions and configuration settings. The service generally provides more flexibility and server configuration customizations based on user requirements. The Azure Database for PostgreSQL - Flexible Server architecture allows users to collocate the database engine with the client tier for lower latency and choose high availability within a single availability zone and across multiple availability zones. Azure Database for PostgreSQL - Flexible Servers also provide better cost optimization controls with the ability to stop/start your server and a burstable compute tier ideal for workloads that don't need full compute capacity continuously.
 
-In this article, we provide a walk-through of how to perform migrations for different scenarios from your Azure Database for PostgreSQL-Single server/on-premises/IaaS/AWS to Azure Database for PostgreSQL - Flexible server in simple, efficient and a hassle-free way.
+## Overview of migration service in Azure Database for PostgreSQL
 
+The migration service in Azure Database for PostgreSQL simplifies the process of moving your PostgreSQL databases to Azure, offering migration options from an Azure Database for PostgreSQL single server, AWS RDS for PostgreSQL, on-premises servers, and Azure virtual machines (VMs). The migration service is designed to help you move to Azure Database for PostgreSQL - Flexible Server with ease and confidence.
+
+In this document, we provide a walk-through of how to perform migrations for different scenarios from your Azure Database for PostgreSQL-Single server/on-premises/IaaS/AWS to Azure Database for PostgreSQL - Flexible server in simple, efficient and a hassle-free way.
 
 ## Key Benefits
-Key benefits of using this service is -  
+
+Key benefits of using the migration service are -  
 
 * Managed migration service.
 * No complex setup/pre-requisites required.
@@ -48,17 +54,5 @@ Get started with the online migration from on-premises/IaaS/AWS to Azure Databas
 
 
 ## Current Limitations [Preview Mode]
-* You can select a max of eight databases in one migration attempt. If you've more than eight databases, you must wait for the first migration to be complete before initiating another migration for the rest of the databases. Support for migration of more than eight databases in a single migration will be introduced later.
-* The service doesn't migrate users and roles.
-* Manual validation of the data, PostgreSQL objects in target server post migration.
-* The tool only migrates user databases and not system databases like template_0, template_1.
-* Migration of POSTGIS, TIMESCALEDB, POSTGIS_TOPOLOGY, POSTGIS_TIGER_GEOCODER, PG_PARTMAN extensions are not supported from source to target. 
-* Extensions that are not supported in the Azure Database for PostgreSQL – Flexible server cannot be migrated. Supported extensions in PostgreSQL Flexible server are - [Extensions - Azure Database for PostgreSQL - Flexible Server | Microsoft Learn](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-extensions)
-* Certain collations are not supported for migrations into Azure Database for PostgreSQL – Flexible server. Please contact Microsoft team, for failures in migrations related to Collations.
-* User-defined collations cannot be migrated into Azure Database for PostgreSQL – Flexible server.
-* Superuser is not supported in Azure Database for PostgreSQL – Flexible server. Below are the few statements that are not supported in the PostgreSQL flexible server – 
-    * Alter user `<<username>>` with SUPERUSER;
-    * Create casts
-    * Creation of FTS parsers and FTS templates
-    * Users with superuser roles
-    * `SSLMODE values supported are prefer, require` for migration. Different SSLMODE like verify-ca, verify-full will be supported in the future releases.
+
+- For a comprehensive list of known issues and limitations related to the migration service in Azure Database for PostgreSQL, please refer to the official documentation - [Migration service in Azure Database for PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/migrate/migration-service/concepts-known-issues-migration-service)
