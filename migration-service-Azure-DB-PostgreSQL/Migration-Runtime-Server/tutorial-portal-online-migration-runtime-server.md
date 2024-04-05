@@ -125,7 +125,7 @@ The first tab is the setup tab where user needs to provide migration details lik
 
 It is always a good practice to choose **Validate** or **Validate and Migrate** option to perform pre-migration validations before running the migration. To learn more about the pre-migration validation refer to this [documentation](./concepts-single-to-flexible.md#pre-migration-validations).
 
-**Migration mode** gives you the option to pick the mode for the migration. **Online** is the default option. Support for online migrations will be introduced later.
+**Migration mode** gives you the option to pick the mode for the migration. **Offline** is the default option.
 
 Select the **Next : Select Runtime Server** button.
 
@@ -154,7 +154,7 @@ The **Connect to Source** tab prompts you to give details related to the Single 
 - After you choose the Single Server source, the Location, PostgreSQL version, and Server admin login name boxes are populated automatically.
 - The server admin sign-in name is the admin username used to create the Single Server. In the Password box, enter the password for that admin user. The migration service migrates single server databases as the admin user.
 
-**Test Connection** - Performs the connectivity test between target and source. Once the connection is successful, users can go ahead with the next step else need to identify the networking issues between target and source, verify username/password for source. Test connection will take few minutes to establish connection between target and source.
+**Test Connection** - Performs the connectivity test between runtime server and source. Once the connection is successful, users can go ahead with the next step else need to identify the networking issues between runtime server and source, verify username/password for source. Test connection will take few minutes to establish connection between runtime server and source.
 
 > [!NOTE]
 > Test connection is performed via the runtime server.
@@ -172,7 +172,7 @@ The **select migration target** tab displays metadata for the Flexible Server ta
 
 **Admin username** - Admin username of the target PostgreSQL server
 **Password** - Password of the target PostgreSQL server
-**Test Connection** - Performs the connectivity test between target and source. Once the connection is successful, users can go ahead with the next step else need to identify the networking issues between target and source, verify username/password for target. Test connection will take few minutes to establish connection between target and source
+**Test Connection** - Performs the connectivity test between target and runtime server. Once the connection is successful, users can go ahead with the next step else need to identify the networking issues between target and runtime server, verify username/password for target. Test connection will take few minutes to establish connection between target and runtime server.
 
 After the successful test connection, select the **Next: Select Database(s) for Migration**
 
