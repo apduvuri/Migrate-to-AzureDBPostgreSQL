@@ -1,19 +1,19 @@
 ---
-title: "Tutorial: Online Migration of Iaas/On-Premises PostgreSQL to Azure Database for PostgreSQL - Flexible Server using the Azure Portal"
+title: "Tutorial: Online Migration of AWS RDS for PostgreSQL to Azure Database for PostgreSQL - Flexible Server using the Azure Portal"
 titleSuffix: "Online Migration : Azure Database for PostgreSQL Flexible Server"
-description: "Learn about Online migration of your On-Premises/IaaS PostgreSQL databases to Azure Database for PostgreSQL - Flexible Server by using the Azure Portal."
+description: "Learn about online migration of your AWS RDS for PostgreSQL instances to Azure Database for PostgreSQL - Flexible Server by using the Azure Portal."
 author: apduvuri
 ms.author: apduvuri
 ms.service: postgresql
 ms.topic: tutorial
-ms.date: 05/09/2023
+ms.date: 05/04/2024
 ms.custom: seo-lt-2023
 ---
-# Tutorial: Online migration of On-Premises/IaaS to Azure Database for PostgreSQL - Flexible server using the Azure Portal
+# Tutorial: Online migration of AWS RDS for PostgreSQL to Azure Database for PostgreSQL - Flexible server using the Azure Portal
 
 ## Overview
 
-You can migrate the PostgreSQL instance from IaaS/On-Premises to Azure Database for PostgreSQL – Flexible Server using the Azure Portal. This document provides the detailed steps to migrate your PostgreSQL instances located in on-premises/Azure VM/IaaS based solutions to Azure Database for PostgreSQL – Flexible Server using Portal.
+You can migrate the PostgreSQL instance from AWS RDS to Azure Database for PostgreSQL – Flexible Server using the Azure Portal. This document provides the detailed steps to migrate your PostgreSQL instances located in AWS RDS to Azure Database for PostgreSQL – Flexible Server using Portal.
 The migration service leverages [pgcopydb](https://github.com/dimitri/pgcopydb) that provides a fast and efficient way of copying databases from one server to another.
 
 > [!NOTE]
@@ -32,8 +32,7 @@ In this document, you will learn to -
 ### Installing test_decoding
 
 - **test_decoding** receives WAL through the logical decoding mechanism and decodes it into text representations of the operations performed.
-- Ensure that the test_decoding output plugin is installed in your source PostgreSQL instance.
-- The test_decoding plugin can be found in the PostgreSQL contrib package.
+- In Amazon RDS for PostgreSQL, the test_decoding plugin is pre-installed and ready to use for logical replication purposes. This allows you to easily set up logical replication slots and stream WAL changes, facilitating use cases such as change data capture (CDC) or replication to external systems.
 - For more information about the test-decoding plugin, see the [PostgreSQL documentation](https://www.postgresql.org/docs/16/test-decoding.html)
 
 
@@ -50,17 +49,17 @@ Source PostgreSQL version should be >= 9.5
 ### Enabling CDC as source
 
 - test_decoding logical decoding plugin is used to capture the changed records from the source.
-- In the source PostgreSQL instance, set the following parameters and values in the `postgresql.conf` configuration file:
-    - Set `wal_level = logical`
+- In the source PostgreSQL instance, modify the following parameters by creating a new parameter group:
+    - Set `rds.logical_replication = 1`
     - Set `max_replication_slots` to a value greater than 1, the value should be equal to greater than the number of databases selected for migration.
     - Set `max_wal_senders` to a value greater than 1, should be set to at least the same as `max_replication_slots`, plus the number of senders already used on your instance.
-    - The `wal_sender_timeout` parameter ends replication connections that are inactive longer than the specified number of milliseconds. The default for an on-premises PostgreSQL database is `60000 milliseconds (60 seconds)`. Setting the value to 0 (zero) disables the timeout mechanism and is a valid setting for migration.
+    - The `wal_sender_timeout` parameter ends replication connections that are inactive longer than the specified number of milliseconds. The default for an AWS RDS for PostgreSQL instance is `30000 milliseconds (30 seconds)`. Setting the value to 0 (zero) disables the timeout mechanism and is a valid setting for migration.
 
 ### Networking
 
 Networking is required to establish a successful connectivity between source and target.
 
-- You need to setup Express route/ IP Sec VPN/ VPN tunnelling while connecting your source from on-premises/Azure virtual machine to Azure.
+- You need to setup Express route/ IP Sec VPN/ VPN tunnelling while connecting your source from AWS RDS to Azure.
 - For detailed information on the networking setup required when using the migration service in Azure Database for PostgreSQL, please refer to the following Microsoft documentation - [Migration Service in Azure Database for PostgreSQL network setup](https://learn.microsoft.com/en-us/azure/postgresql/migrate/migration-service/how-to-network-setup-migration-service)
 
 ### Extensions
@@ -101,20 +100,20 @@ The migration service comes with a simple, wizard-based experience on the Azure 
 2. Go to your Azure Database for PostgreSQL Flexible Server target.
 
 3. In the **Overview** tab of the Flexible Server, on the left menu, scroll down to **Migration** and select it. 
-![migrationselection](../media/offline_portal_select_migration_pane.png)
+![migrationselection](../media/online_portal_aws/migration-portal-select.png)
 
-4. Select the **Create** button to start a migration from On-Premises/Azure VM to Flexible Server. If this is the first time you're using the migration service, an empty grid appears with a prompt to begin your first migration.
+4. Select the **Create** button to start a migration from AWS RDS to Azure Database for PostgreSQL - Flexible Server. If this is the first time you're using the migration service, an empty grid appears with a prompt to begin your first migration.
 
   ![createmigration](../media/portal_offline_create_migration.png)
 
-  If you've already created migrations to your Flexible Server target, the grid contains information about migrations that were attempted.
+  If you've already created migrations to your Azure Database for PostgreSQL - Flexible Server target, the grid contains information about migrations that were attempted.
 
-5. Select the **Create** button. You go through a wizard-based series of tabs to create a migration into this Flexible Server target from the PostgreSQL source Server.
+5. Select the **Create** button. You go through a wizard-based series of tabs to create a migration into this Azure Database for PostgreSQL - Flexible Server target from the PostgreSQL source instance.
 
 ### Setup
 
 The first tab is the setup tab where user needs to provide migration details like migration name, source type to initiate the migrations
- ![setupmigration](../media/portal_online_setup_migration.png)
+ ![setupmigration](../media/online_portal_aws/aws-portal-setup.png)
 
 **Migration name** is the unique identifier for each migration to this Flexible Server target. This field accepts only alphanumeric characters and doesn't accept any special characters except a hyphen (-). The name can't start with a hyphen and should be unique for a target server. No two migrations to the same Flexible Server target can have the same name.
 
@@ -128,14 +127,14 @@ The first tab is the setup tab where user needs to provide migration details lik
 
 It is always a good practice to choose **Validate** or **Validate and Migrate** option to perform pre-migration validations before running the migration. To learn more about the pre-migration validation refer to this [documentation](https://learn.microsoft.com/en-us/azure/postgresql/migrate/migration-service/concepts-premigration-migration-service).
 
-**Migration mode** gives you the option to pick the mode for the migration. **Offline** is the default option.
+**Migration mode** gives you the option to pick the mode for the migration. **Offline** is the default option. 
 
 Select the **Next : Connect to source** button.
 
 ### Connect to Source
 
 The **Connect to Source** tab prompts you to give details related to the source selected in the **Setup Tab** that is the source of the databases.
-![connectsourcemigration](../media/portal_offline_connectsource_migration.png)
+![connectsourcemigration](../media/online_portal_aws/aws-connect-source.png)
 
 **Server Name** - Provide the Hostname or the IP address os the source PostgreSQL instance
 **Port** - Port number of the Source server
@@ -150,7 +149,7 @@ After the successful test connection, select the **Next: Select Migration target
 
 The **select migration target** tab displays metadata for the Flexible Server target, like subscription name, resource group, server name, location, and PostgreSQL version.
  
-![connecttargetmigration](../media/portal_offline_connecttarget_migration.png)
+![connecttargetmigration](../media/online_portal_aws/aws-connect-target.png)
 
 
 **Admin username** - Admin username of the target PostgreSQL server
@@ -163,7 +162,7 @@ After the successful test connection, select the **Next: Select Database(s) for 
 
 Under this tab, there is a list of user databases inside the source server selected in the setup tab. You can select and migrate up to eight databases in a single migration attempt. If there are more than eight user databases, the migration process is repeated between the source and target servers for the next set of databases.
 
-![FetchDBmigration](../media/portal_offline_fetchdb_migration.png)
+![FetchDBmigration](../media/online_portal_aws/aws-fetch-db.png)
 
 Post selecting the databases, select the **Next:Summary**
 
@@ -171,12 +170,12 @@ Post selecting the databases, select the **Next:Summary**
 
 The **Summary** tab summarizes all the source and target details for creating the validation or migration. Review the details and click on the start button.
 
-![Summarymigration](../media/portal_offline_summary_migration.png)
+![Summarymigration](../media/online_portal_aws/aws-summary.png)
 
 ### Monitor the migration
 
 After you click the start button, a notification appears in a few seconds to say that the validation or migration creation is successful. You are redirected automatically to the **Migration** blade of Flexible Server. This has a new entry for the recently created validation or migration.
-![Monitormigration](../media/portal_offline_monitor_migration.png)
+![Monitormigration](../media/online_portal_aws/aws-monitor.png)
 
 The grid that displays the migrations has these columns: **Name**, **Status**,  **Migration mode**, **Migration type**, **Source server**, **Source server type**, **Databases**, **Duration** and **Start time**. The entries are displayed in the descending order of the start time with the most recent entry on the top. You can use the refresh button to refresh the status of the validation or migration.
 You can also select the migration name in the grid to see the associated details.
@@ -186,13 +185,13 @@ As soon as the validation or migration is created, it moves to the **InProgress*
 ### Migration Details
 
 In the Setup tab, we have selected the migration option as **Migrate and Validate**. In this scenario, validations are performed first before migration starts. After the **PerformingPreRequisiteSteps** sub state is completed, the workflow moves into the sub state of **Validation in Progress**. 
+
 - If validation has errors, the migration will move into a **Failed** state.
 - If validation completes without any error, the migration will start and the workflow will move into the sub state of **Migrating Data**. 
 
-You can see the results of validation under the **Validation** tab and monitor the migration under the **Migration** tab.
+You can see the results of validation and migration at the instance and database level.
 
-![validationmigration](../media/portal_offline_validation_migration.png)
-![detailsmigration](../media/portal_offline_details_migration.png)
+![detailsmigration](../media/online_portal_aws/aws-details-migration.png)
 
 
 Possible migration states include:
@@ -218,15 +217,16 @@ In case of both **Migrate** as well as **Validate and Migrate**, completion of t
 Before initiating cutover, it's important to ensure that:
 
 - Writes to the source are stopped - `Latency (minutes)` parameter is 0 or close to 0 The `Latency (minutes)` information can be obtained from the migration details screen as shown below:
-![cutovermigration](../media/portal_online_cutover_migration.png)
+![cutovermigration](../media/online_portal_aws/aws-cutover-migration.png)
 
-- `Latency (minutes)` parameter indicates when the target last synced up with the source. For example, for the salesdb database above, it's 0.33333. It means that the changes that occurred in the last ~0.3 minutes at the source are yet to be synced to the target, for the salesdb Database. At this point, writes to the source can be stopped and cutover initiated. In case there's heavy traffic at the source, it's recommended to stop writes first so that `Latency (minutes)` can come close to 0 and then cutover is initiated. The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero Latency, the replication stops until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it's recommended that the latency goes to zero or near zero, before triggering the cutover.
+- `Latency (minutes)` parameter indicates when the target last synced up with the source. For example, for the db_8 database above, it's 0.33333. It means that the changes that occurred in the last ~0.3 minutes at the source are yet to be synced to the target, for the db_8 database. At this point, writes to the source can be stopped and cutover initiated. In case there's heavy traffic at the source, it's recommended to stop writes first so that `Latency (minutes)` come to 0 and then cutover is initiated. 
+- The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero Latency, the replication stops until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it's recommended that the latency goes to zero or near zero, before triggering the cutover.
 
-![confirmcutovermigration](../media/portal_online_confirm_cutover.png)
+![confirmcutovermigration](../media/online_portal_aws/aws_confirm_cutover.png)
 
 - The migration moves to the `Succeeded` state as soon as the `Migrating Data` substate or the cutover (in Online migration) finishes successfully. If there's a problem at the `Migrating Data` substate, the migration moves into a `Failed` state.
 
-![successmigration](../media/portal_online_successful_migration.png)
+![successmigration](../media/online_portal_aws/aws-success-migration.png)
 
 
 ## Cancel the migration
@@ -240,6 +240,7 @@ Canceling a migration stops further migration activity on your target server and
 ## Post Migration
 
 After the migration has moved to the **Succeeded** state, follow the post-migration steps - 
+
 - Once the migration is complete, verify the data on your flexible server and make sure it's an exact copy of the source server.
 - Post verification, enable HA option as needed on your flexible server.
 - Change the SKU of the flexible server to match the application needs. This change needs a database server restart.
