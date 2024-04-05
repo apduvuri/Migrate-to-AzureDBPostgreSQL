@@ -287,21 +287,22 @@ Ensure that all the pre-requisites are completed before start of migration.
 ```
 
 - Run the following command, to check if there are any migrations already performed. The migration name is the unique across the migrations within the Azure Database for PostgreSQL – Flexible server target.
-'''bash
+
+```bash
 az postgres flexible-server migration list --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --filter All
-'''
+```
 ![listcli](../media/listcli.png)
 
 - In the above steps, there are no migrations performed so we will start with the new migration by running the following command –
-'''bash
+```bash
 az postgres flexible-server migration create --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Unique Migration Name>> --properties "C:\migration-cli\migration_body.json"
-'''
+```
 ![createcli](../media/createmigrationcli.png)
 
 - Run the following command to get the status of the migration that got initiated in the previous step. You can check the status of the migration by providing the migration name
-'''bash
+```bash
 az postgres flexible-server migration show --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Migration ID>>
-'''
+```
 ![showcli](../media/showmigrationcli.png)
 
 - You can also see the status in the Azure Database for PostgreSQL – Flexible server portal
