@@ -236,7 +236,7 @@ In this tutorial, we will be migrating PostgreSQL database residing in Azure VM 
 
 ### Step 2 - Create target Azure Database for PostgreSQL – Flexible server
 
-We used the [QuickStart guide](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal) to create a corresponding PostgreSQL target flexible server. We kept the SKU same and given we are just migrating a small sample database; we are allocating 128 GB of storage. Below is the target server screenshot once created –
+We used the [QuickStart guide](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal) to create a corresponding PostgreSQL target flexible server. Below is the target server screenshot once created –
 
 ![flexibleservertarget](../media/online_cli_aws/create_target.png)
 
@@ -284,21 +284,23 @@ Ensure that all the pre-requisites are completed before start of migration.
 
 - Run the following command, to check if there are any migrations already performed. The migration name is the unique across the migrations within the Azure Database for PostgreSQL – Flexible server target.
 
-'''bash
+```bash
 az postgres flexible-server migration list --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --filter All
-'''
+```
 
 - In the above steps, there are no migrations performed so we will start with the new migration by running the following command –
 
-'''bash
+```bash
 az postgres flexible-server migration create --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Unique Migration Name>> --properties "C:\migration-cli\migration_body.json"
-'''
+```
 ![createcli](../media/online_cli_aws/create-migration-cli.png)
 
 - Run the following command to get the status of the migration that got initiated in the previous step. You can check the status of the migration by providing the migration name
-'''bash
+
+```bash
 az postgres flexible-server migration show --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Migration ID>>
-'''
+```
+
 ![showcli](../media/online_cli_aws/show-migration-cli.png)
 
 - In Online migrations, after the base data migration is complete, the migration task moves to `WaitingForCutoverTrigger` substate. In this state, user can trigger cutover through CLI using the command below. The cutover can also be triggered from the portal by selecting the migration name in the migration grid.
