@@ -116,15 +116,14 @@ The migration service comes with a simple, wizard-based experience on the Azure 
 The first tab is the setup tab where user needs to provide migration details like migration name, source type to initiate the migrations
  ![setupmigration](../media/portal_online_setup_migration.png)
 
-**Migration name** is the unique identifier for each migration to this Flexible Server target. This field accepts only alphanumeric characters and doesn't accept any special characters except a hyphen (-). The name can't start with a hyphen and should be unique for a target server. No two migrations to the same Flexible Server target can have the same name.
+- **Migration name** is the unique identifier for each migration to this Flexible Server target. This field accepts only alphanumeric characters and doesn't accept any special characters except a hyphen (-). The name can't start with a hyphen and should be unique for a target server. No two migrations to the same Flexible Server target can have the same name.
 
-**Source Server Type** - Depending on your PostgreSQL source, you can select AWS RDS for PostgreSQL, Azure Database for PostgreSQL - Single server, on-premises, Azure VM.
+- **Source Server Type** - Depending on your PostgreSQL source, you can select AWS RDS for PostgreSQL, Azure Database for PostgreSQL - Single server, on-premises, Azure VM.
 
-**Migration Option** gives you the option to perform validations before triggering a migration. You can pick any of the following options:
-
- - **Validate** - Checks your server and database readiness for migration to the target.
- - **Migrate** - Skips validations and starts migrations.
- - **Validate and Migrate** - Performs validation before triggering a migration. Migration gets triggered only if there are no validation failures.
+- **Migration Option** gives you the option to perform validations before triggering a migration. You can pick any of the following options:
+     - **Validate** - Checks your server and database readiness for migration to the target.
+     - **Migrate** - Skips validations and starts migrations.
+     - **Validate and Migrate** - Performs validation before triggering a migration. Migration gets triggered only if there are no validation failures.
 
 It is always a good practice to choose **Validate** or **Validate and Migrate** option to perform pre-migration validations before running the migration. To learn more about the pre-migration validation refer to this [documentation](https://learn.microsoft.com/en-us/azure/postgresql/migrate/migration-service/concepts-premigration-migration-service).
 
@@ -137,12 +136,12 @@ Select the **Next : Connect to source** button.
 The **Connect to Source** tab prompts you to give details related to the source selected in the **Setup Tab** that is the source of the databases.
 ![connectsourcemigration](../media/portal_offline_connectsource_migration.png)
 
-**Server Name** - Provide the Hostname or the IP address os the source PostgreSQL instance
-**Port** - Port number of the Source server
-**Server admin login name** - Username of the source PostgreSQL server
-**Password** - Password of the source PostgreSQL server
-**SSL Mode** - Supported values are prefer and require. When the SSL at source PostgreSQL server is OFF then use the SSLMODE=prefer. If the SSL at source server is ON then use the SSLMODE=require. SSL values can be determined in postgresql.conf file.
-**Test Connection** - Performs the connectivity test between target and source. Once the connection is successful, users can go ahead with the next step else need to identify the networking issues between target and source, verify username/password for source. Test connection will take few minutes to establish connection between target and source
+- **Server Name** - Provide the Hostname or the IP address os the source PostgreSQL instance
+- **Port** - Port number of the Source server
+- **Server admin login name** - Username of the source PostgreSQL server
+- **Password** - Password of the source PostgreSQL server
+- **SSL Mode** - Supported values are prefer and require. When the SSL at source PostgreSQL server is OFF then use the SSLMODE=prefer. If the SSL at source server is ON then use the SSLMODE=require. SSL values can be determined in postgresql.conf file.
+- **Test Connection** - Performs the connectivity test between target and source. Once the connection is successful, users can go ahead with the next step else need to identify the networking issues between target and source, verify username/password for source. Test connection will take few minutes to establish connection between target and source
 
 After the successful test connection, select the **Next: Select Migration target**
 
@@ -153,9 +152,9 @@ The **select migration target** tab displays metadata for the Flexible Server ta
 ![connecttargetmigration](../media/portal_offline_connecttarget_migration.png)
 
 
-**Admin username** - Admin username of the target PostgreSQL server
-**Password** - Password of the target PostgreSQL server
-**Test Connection** - Performs the connectivity test between target and source. Once the connection is successful, users can go ahead with the next step else need to identify the networking issues between target and source, verify username/password for target. Test connection will take few minutes to establish connection between target and source
+- **Admin username** - Admin username of the target PostgreSQL server
+- **Password** - Password of the target PostgreSQL server
+- **Test Connection** - Performs the connectivity test between target and source. Once the connection is successful, users can go ahead with the next step else need to identify the networking issues between target and source, verify username/password for target. Test connection will take few minutes to establish connection between target and source
 
 After the successful test connection, select the **Next: Select Database(s) for Migration**
 
@@ -218,9 +217,11 @@ In case of both **Migrate** as well as **Validate and Migrate**, completion of t
 Before initiating cutover, it's important to ensure that:
 
 - Writes to the source are stopped - `Latency (minutes)` parameter is 0 or close to 0 The `Latency (minutes)` information can be obtained from the migration details screen as shown below:
+- 
 ![cutovermigration](../media/portal_online_cutover_migration.png)
 
-- `Latency (minutes)` parameter indicates when the target last synced up with the source. For example, for the salesdb database above, it's 0.33333. It means that the changes that occurred in the last ~0.3 minutes at the source are yet to be synced to the target, for the salesdb Database. At this point, writes to the source can be stopped and cutover initiated. In case there's heavy traffic at the source, it's recommended to stop writes first so that `Latency (minutes)` can come close to 0 and then cutover is initiated. The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero Latency, the replication stops until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it's recommended that the latency goes to zero or near zero, before triggering the cutover.
+- `Latency (minutes)` parameter indicates when the target last synced up with the source. For example, for the db_8 database above, it's 0.33333. It means that the changes that occurred in the last ~0.3 minutes at the source are yet to be synced to the target, for the db_8 database. At this point, writes to the source can be stopped and cutover initiated. In case there's heavy traffic at the source, it's recommended to stop writes first so that `Latency (minutes)` come to 0 and then cutover is initiated. 
+- The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero Latency, the replication stops until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it's recommended that the latency goes to zero or near zero, before triggering the cutover.
 
 ![confirmcutovermigration](../media/portal_online_confirm_cutover.png)
 

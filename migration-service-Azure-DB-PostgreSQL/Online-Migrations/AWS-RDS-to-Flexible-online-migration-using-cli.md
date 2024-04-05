@@ -24,15 +24,14 @@ The migration service is currently exposed through easy-to-use Azure CLI command
 ### Installing test_decoding
 
 - **test_decoding** receives WAL through the logical decoding mechanism and decodes it into text representations of the operations performed.
-- Ensure that the test_decoding output plugin is installed in your source PostgreSQL instance.
-- The test_decoding plugin can be found in the PostgreSQL contrib package.
+- In Amazon RDS for PostgreSQL, the test_decoding plugin is pre-installed and ready to use for logical replication purposes. This allows you to easily set up logical replication slots and stream WAL changes, facilitating use cases such as change data capture (CDC) or replication to external systems.
 - For more information about the test-decoding plugin, see the [PostgreSQL documentation](https://www.postgresql.org/docs/16/test-decoding.html)
     
 ### Azure CLI Setup
 
 - Install the Azure CLI depending on the operating system to run the CLI commands.
 - Azure CLI can be installed from - [How to install the Azure CLI | Microsoft Learn](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
-- In case Azure CLI is already installed, check the version by issuing az version command. The version should be at least 2.50.0 or above to use the private preview version of the CLI commands. If not, please update your Azure CLI using the following link.
+- In case Azure CLI is already installed, check the version by issuing az version command. The version should be at least 2.56.0 or above to use the private preview version of the CLI commands. If not, please update your Azure CLI using the following link.
 - Once installed, run the az login command. This will open the default browser and load an Azure sign-in page to authenticate. Pass in your azure credentials to do a successful authentication. For other ways to sign with Azure CLI, visit this link.
 
 ### Target Setup
@@ -81,7 +80,7 @@ If yes, go to the server parameters blade and search for shared_preload_librarie
 
 ![Shared Preload libraries](../media/az-flexible-server-shared_preload-extensions.png)
 
-### Users and Roles
+### Users or Roles
 
 - The users, different roles must be migrated manually to the Azure Database for PostgreSQL – Flexible server. For migrating users and roles you can use `pg_dumpall --globals-only -U <<username> -f <<filename>>.sql`.
 - Azure Database for PostgreSQL – Flexible server does not support any superuser, users having roles of superuser needs to be removed before migration.
@@ -93,9 +92,8 @@ If yes, go to the server parameters blade and search for shared_preload_librarie
 
 ## Starting with CLI
 
-The preview comes with a list of easy-to-use CLI commands to perform migration related tasks. All the CLI commands starts with “az postgres flexible-server migration”. There are also help statements provided to assist you in understanding the various options and in framing the right syntax for the CLI commands.
-CLI commands for migrating from On-premises/IaaS to Azure Database for PostgreSQL – Flexible server is almost like the CLI commands used to migrate from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server.
-At present for offline migration, CLI commands is in GA that supports migration from Azure Database for PostgreSQL – Single server to Azure Database for PostgreSQL – Flexible server [Tutorial: Migrate Azure Database for PostgreSQL - Single Server to Flexible Server using the Azure CLI - Azure Database for PostgreSQL Flexible Server | Microsoft Learn](https://learn.microsoft.com/en-us/azure/postgresql/migrate/how-to-migrate-single-to-flexible-cli)
+The CLI comes with a list of easy-to-use CLI commands to perform migration related tasks. All the CLI commands starts with “az postgres flexible-server migration”. There are also help statements provided to assist you in understanding the various options and in framing the right syntax for the CLI commands.
+
 Once the CLI is installed, open the command prompt and login into the azure account using the below command.
 
 Example with Windows command prompt - 
@@ -127,6 +125,7 @@ az postgres flexible-server migration create --subscription 11111111-1111-1111-1
 ```
 
 Different substates flow when the create command is triggered - 
+
 - The migration moves to the InProgress state and the PerformingPreRequisiteSteps substate. 
 - After the PerformingPreRequisiteSteps substate is completed, the migration moves to the substate of Migrating Data, where the Cloning/Copying of the databases take place.
 - Each database migrated has its own section with all migration details, such as table count, incremental inserts, deletions, and pending bytes.
@@ -153,7 +152,7 @@ You need to provide a JSON file with the absolute path as parameter while initia
 | `dbsToMigrate` | Specify the list of databases that you want to migrate to Flexible Server. You can include a maximum of eight database names at a time. Providing the list of DB’s in array format. |
 | `OverwriteDBsInTarget` | When set to true (default), if the target server happens to have an existing database with the same name as the one you're trying to migrate, migration service automatically overwrites the database |
 | `MigrationMode` | Mode of the migration. Supported value is "Offline" |
-| `sourceType` | Required parameter. Values can be - OnPremises, AWS, AzureVM, PostgreSQLSingleServer |
+| `sourceType` | Required parameter. Values can be - OnPremises, AWS_RDS, AzureVM, PostgreSQLSingleServer |
 | `sslMode` | SSL modes for migration. SSL mode for PostgreSQLSingleServer is VerifyFull and Prefer/Require for other source types |
 
 ### list
@@ -208,9 +207,13 @@ az postgres flexible-server migration update --subscription 11111111-1111-1111-1
 ```
 
 Before initiating cutover it is important to ensure that:
+
 - Writes to the source are stopped
 - `latency` parameter decreases to 0 or close to 0
-- `latency` parameter indicates when the target last synced up with the source. For example, here it is 201 and 202 for the two databases as shown in the picture below, it means that the changes that have occurred in the last ~200 seconds at the source are yet to be synced to the target. At this point, writes to the source can be stopped and cutover initiated.In case there is heavy traffic at the source, it is recommended to stop writes first so that `Latency` can come close to 0 and then cutover is initiated. The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero `Latency`, the replication will stop until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it is recommended that the latency goes to zero or near zero, before triggering the cutover. 
+- `latency` parameter indicates when the target last synced up with the source. At this point, writes to the source can be stopped and cutover initiated.In case there is heavy traffic at the source, it is recommended to stop writes first so that `Latency` can come close to 0 and then cutover is initiated.
+- The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero `Latency`, the replication will stop until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. 
+- Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it is recommended that the latency goes to zero or near zero, before triggering the cutover. 
+
 The `latency` information can be obtained using the [migration show command](#monitor-the-migration).
 Here's a snapshot of the migration before initiating the cutover:
 
@@ -226,28 +229,25 @@ In this tutorial, we will be migrating PostgreSQL database residing in Azure VM 
 
 ### Step 1 - Connect to the source
 
-- In this tutorial, source PostgreSQL version used is 14.8 and it is installed in one of the Azure VM with operating system as Ubuntu.
-- Source PostgreSQL instance contains around 10 databases and for this tutorial we are going to migrate "ticketdb","timedb","salesdb" and "postgres" into Azure Database for PostgreSQL – Flexible server.
+- In this tutorial, source AWS RDS for PostgreSQL version used is 14.8
+- For this tutorial we are going to migrate "db8_1","db8_2" and "postgres" into Azure Database for PostgreSQL – Flexible server.
 
-![azmigrationsource](../media/az_migration_source_cli.png)
+![azmigrationsource](../media/online_cli_aws/source-details.png)
 
 ### Step 2 - Create target Azure Database for PostgreSQL – Flexible server
 
 We used the [QuickStart guide](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal) to create a corresponding PostgreSQL target flexible server. We kept the SKU same and given we are just migrating a small sample database; we are allocating 128 GB of storage. Below is the target server screenshot once created –
 
-![flexibleservertarget](../media/flexibleservertargetcreation.png)
+![flexibleservertarget](../media/online_cli_aws/create_target.png)
 
 ### Step 3 - Setup the pre-requisites
 
 Ensure that all the pre-requisites are completed before start of migration.
+
 - Networking establishment between source and target.
-- For this tutorial, we have modified the pg_hba.conf file in the source.
-
-![pghba](../media/pg_hbaconf.png)
-
 - Azure CLI environment and all the appropriate defaults are setup.
 - Extensions are allowed listed and included in shared-load libraries.
-- Users and Roles are migrated.
+- Users or Roles are migrated.
 - Server Parameters are configured appropriately.
 
 ### Step 4 - Perform migration using CLI
@@ -272,37 +272,44 @@ Ensure that all the pre-requisites are completed before start of migration.
 		},
      "targetServerUserName":"<<Target username>>",
 		"DBsToMigrate": [
-			<< comma separated list of databases like - "ticketdb","timedb","salesdb" >>
+			<< comma separated list of databases like - "db8_1","db8_2" >>
 		],
 		"OverwriteDBsInTarget": "true",
 		"MigrationMode": "Online",
-    "sourceType": "OnPremises",
-    "sslMode": "Prefer"
+    "sourceType": "AWS_RDS",
+    "sslMode": "Require"
 	}
 }
 ```
 
 - Run the following command, to check if there are any migrations already performed. The migration name is the unique across the migrations within the Azure Database for PostgreSQL – Flexible server target.
+
 '''bash
 az postgres flexible-server migration list --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --filter All
 '''
-![listcli](../media/listcli.png)
 
 - In the above steps, there are no migrations performed so we will start with the new migration by running the following command –
+
 '''bash
 az postgres flexible-server migration create --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Unique Migration Name>> --properties "C:\migration-cli\migration_body.json"
 '''
-![createcli](../media/createmigrationcli.png)
+![createcli](../media/online_cli_aws/create-migration-cli.png)
 
 - Run the following command to get the status of the migration that got initiated in the previous step. You can check the status of the migration by providing the migration name
 '''bash
 az postgres flexible-server migration show --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Migration ID>>
 '''
-![showcli](../media/showmigrationcli.png)
+![showcli](../media/online_cli_aws/show-migration-cli.png)
 
-- You can also see the status in the Azure Database for PostgreSQL – Flexible server portal
+- In Online migrations, after the base data migration is complete, the migration task moves to `WaitingForCutoverTrigger` substate. In this state, user can trigger cutover through CLI using the command below. The cutover can also be triggered from the portal by selecting the migration name in the migration grid.
 
-![statusmigration](../media/statusmigrationportal.png)
+![waiting for cutover](../media/online_cli_aws/waitcutover.png)
+
+![Intiating cutover](../media/online_cli_aws/initiate-cutover.png)
+
+-  You can also see the status in the Azure Database for PostgreSQL – Flexible server portal
+
+![migration status in portal](../media/online_cli_aws/statusportal.png)
 
 ### Step 5 - Post Migration
 
