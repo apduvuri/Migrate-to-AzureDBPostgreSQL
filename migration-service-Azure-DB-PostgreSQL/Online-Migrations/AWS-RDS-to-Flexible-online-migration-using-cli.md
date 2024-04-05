@@ -305,6 +305,10 @@ az postgres flexible-server migration show --subscription <<subscription ID>> --
 
 - In Online migrations, after the base data migration is complete, the migration task moves to `WaitingForCutoverTrigger` substate. In this state, user can trigger cutover through CLI using the command below. The cutover can also be triggered from the portal by selecting the migration name in the migration grid.
 
+```bash
+az postgres flexible-server migration update --subscription <<subscription ID>> --resource-group <<resource group name>> --name <<Name of the Flexible Server>> --migration-name <<Unique Migration Name>> --cutover
+```
+
 ![waiting for cutover](../media/online_cli_aws/waitcutover.png)
 
 ![Intiating cutover](../media/online_cli_aws/initiate-cutover.png)
