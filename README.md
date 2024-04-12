@@ -31,9 +31,9 @@ The Migration Runtime Server is a specialized feature within the [migration serv
 
 - [**Introduction to Migration runtime server within migration service in Azure Database for PostgreSQL**](migration-service-Azure-DB-PostgreSQL/Migration-Runtime-Server/overview.md)
 
-## Start your offline migration
+## Start your offline migration using Azure ARM Template
 
-Get started with the offline migration from on-premises/IaaS/AWS to Azure Database for PostgreSQL - Flexible server by using one of the following methods:
+Get started with the offline migration from on-premises/IaaS/AWS to Azure Database for PostgreSQL - Flexible server by using Azure ARM Template:
 
 - [**Using the Azure ARM Template - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (Offline)**](migration-service-Azure-DB-PostgreSQL/Offline-Migrations/IaaS-to-Flexible-offline-migration-using-ARM-Template.md)
 
