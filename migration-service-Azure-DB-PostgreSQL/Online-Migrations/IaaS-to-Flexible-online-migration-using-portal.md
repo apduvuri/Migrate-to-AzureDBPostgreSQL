@@ -29,7 +29,7 @@ In this document, you will learn to -
 
 ## Pre-Requisites
 
-### Installing test_decoding
+### Installing test_decoding - Source Setup
 
 - **test_decoding** receives WAL through the logical decoding mechanism and decodes it into text representations of the operations performed.
 - Ensure that the test_decoding output plugin is installed in your source PostgreSQL instance.
@@ -52,7 +52,7 @@ Source PostgreSQL version should be >= 9.5
 - test_decoding logical decoding plugin is used to capture the changed records from the source.
 - In the source PostgreSQL instance, set the following parameters and values in the `postgresql.conf` configuration file:
     - Set `wal_level = logical`
-    - Set `max_replication_slots` to a value greater than 1, the value should be equal to greater than the number of databases selected for migration.
+    - Set `max_replication_slots` to a value greater than 1, the value should be greater than the number of databases selected for migration.
     - Set `max_wal_senders` to a value greater than 1, should be set to at least the same as `max_replication_slots`, plus the number of senders already used on your instance.
     - The `wal_sender_timeout` parameter ends replication connections that are inactive longer than the specified number of milliseconds. The default for an on-premises PostgreSQL database is `60000 milliseconds (60 seconds)`. Setting the value to 0 (zero) disables the timeout mechanism and is a valid setting for migration.
 
@@ -79,6 +79,7 @@ Networking is required to establish a successful connectivity between source and
     - PG_AUDIT
     - PGLOGICAL
     - WAL2JSON
+
 If yes, go to the server parameters blade and search for shared_preload_libraries parameter. This parameter indicates the set of extension libraries that are preloaded at the server restart.
 
 ![Shared Preload libraries](../media/az-flexible-server-shared_preload-extensions.png)
@@ -216,12 +217,14 @@ In case of both **Migrate** as well as **Validate and Migrate**, completion of t
 
 Before initiating cutover, it's important to ensure that:
 
-- Writes to the source are stopped - `Latency (minutes)` parameter is 0 or close to 0 The `Latency (minutes)` information can be obtained from the migration details screen as shown below:
+- Writes to the source are stopped - `Latency` value is 0 or close to 0 The `Latency` information can be obtained from the migration details screen as shown below:
 - 
 ![cutovermigration](../media/portal_online_cutover_migration.png)
 
-- `Latency (minutes)` parameter indicates when the target last synced up with the source. For example, for the db_8 database above, it's 0.33333. It means that the changes that occurred in the last ~0.3 minutes at the source are yet to be synced to the target, for the db_8 database. At this point, writes to the source can be stopped and cutover initiated. In case there's heavy traffic at the source, it's recommended to stop writes first so that `Latency (minutes)` come to 0 and then cutover is initiated. 
-- The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero Latency, the replication stops until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it's recommended that the latency goes to zero or near zero, before triggering the cutover.
+- `latency` value decreases to 0 or close to 0
+- `latency` value indicates when the target last synced up with the source. At this point, writes to the source can be stopped and cutover initiated.In case there is heavy traffic at the source, it is recommended to stop writes first so that `Latency` can come close to 0 and then cutover is initiated.
+- The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero `Latency`, the replication will stop until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. 
+- Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it is recommended that the latency goes to zero or near zero, before triggering the cutover.
 
 ![confirmcutovermigration](../media/portal_online_confirm_cutover.png)
 
@@ -240,11 +243,16 @@ Canceling a migration stops further migration activity on your target server and
 
 ## Post Migration
 
-After the migration has moved to the **Succeeded** state, follow the post-migration steps - 
-- Once the migration is complete, verify the data on your flexible server and make sure it's an exact copy of the source server.
-- Post verification, enable HA option as needed on your flexible server.
+After completing the migration successfully, you need to manually validate the data between source and target and verify that all the objects in the target database are successfully created.
+
+After migration, you can perform the following tasks:
+
+- Verify the data on your flexible server and ensure it's an exact copy of the source instance.
+- Post verification, enable the high availability option on your flexible server as needed.
 - Change the SKU of the flexible server to match the application needs. This change needs a database server restart.
-- Make changes to your application to point the connection strings to flexible server.
+- If you change any server parameters from their default values in the source instance, copy those server parameter values in the flexible server.
+- Copy other server settings like tags, alerts, and firewall rules (if applicable) from the source instance to the flexible server.
+- Make changes to your application to point the connection strings to a flexible server.
 - Monitor the database performance closely to see if it requires performance tuning.
 
 ## Migration best practices
