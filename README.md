@@ -58,7 +58,11 @@ Get started with the online migration from on-premises/IaaS/AWS to Azure Databas
 - [**Using the Azure Portal - Migrate from AWS RDS to Azure Database for PostgreSQL - Flexible server (Online)**](migration-service-Azure-DB-PostgreSQL/Online-Migrations/AWS-RDS-to-Flexible-online-migration-using-portal.md)
 - [**Using the Azure CLI - Migrate from AWS RDS to Azure Database for PostgreSQL - Flexible server (Online)**](migration-service-Azure-DB-PostgreSQL/Online-Migrations/AWS-RDS-to-Flexible-online-migration-using-cli.md)
 
-
-## Current Limitations [Preview Mode]
+## Current Limitations
 
 - For a comprehensive list of known issues and limitations related to the migration service in Azure Database for PostgreSQL, please refer to the official documentation - [Migration service in Azure Database for PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/migrate/migration-service/concepts-known-issues-migration-service)
+
+## Online migrations limitations migrating from AWS RDS for PostgreSQL, On-Premises server, Azure VM [Preview Mode]
+
+- Bit datatype is not supported for CDC operations like updates and deletes.
+- CDC requires tables to have primary keys to track changes. Migrations involving CDC will fail for tables without primary keys. Ensure all tables have primary keys before initiating the migration process.
