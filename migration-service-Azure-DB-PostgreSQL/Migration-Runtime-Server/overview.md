@@ -51,10 +51,16 @@ To use the Migration Runtime Server feature within the migration service in Azur
 
 - **Minimal Configuration** - Despite being created from an Azure Database for PostgreSQL Flexible Server, the migration runtime server's role is to solely facilitate migration, without the need for HA, backups, version specificity, or advanced storage features.
 - **Performance and Sizing** - The migration runtime server should be adequately sized to handle the workload of the migration process.
-- **Networking** Ensure that the migration runtime server is properly integrated into the Virtual Network (VNet) and that network security allows for secure communication with both the source and target servers.
+- **Networking** Ensure that the migration runtime server is properly integrated into the Virtual Network (VNet) and that network security allows for secure communication with both the source and target servers. For more information, refer the [documentation](concepts-network.md)
 - **Cleanup Post-Migration** - After the migration is complete, the migration runtime server should be decommissioned to avoid unnecessary costs. Ensure all data has been successfully migrated and that the server is no longer needed before deletion.
 
 ## Limitations
 
 - The Migration Runtime Server is specifically designed to operate with the default private DNS zone i.e., **privatelink.postgres.database.azure.com**. Custom DNS names are not supported by the migration service when utilizing the migration runtime server feature. When configuring private endpoints for both the source and target databases, it is imperative to use the default private DNS zone provided by Azure for the private link service. The use of custom DNS configurations is not yet supported and may lead to connectivity issues during the migration process.
 - All other limitations related to the migration service in Azure Database for PostgreSQL are also applicable. Please refer the [known issues and limitations documentation](https://learn.microsoft.com/en-us/azure/postgresql/migrate/migration-service/concepts-known-issues-migration-service)
+
+
+## Next Steps
+
+Begin migrating your private endpoint or privately-enabled PostgreSQL instances to Azure Database for PostgreSQL - Flexible Server using the following methods:
+- [**Using the Azure Portal - Migrate from Azure Database for PostgreSQL - Single server to Azure Database for PostgreSQL - Flexible server (Online)**](tutorial-portal-online-migration-runtime-server.md)
