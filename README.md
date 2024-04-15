@@ -29,6 +29,20 @@ For more detailed information and guidance on using the migration service in Azu
 
 The Migration Runtime Server is a specialized feature within the [migration service in Azure Database for PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/migrate/migration-service/concepts-migration-service-postgresql), designed to act as an intermediary server during the migration process.
 
+- Sign in to the Azure Portal at https://portal.azure.com.
+- Search for "Preview features" in the Azure portal search bar.
+
+![Go to preview features](migration-service-Azure-DB-PostgreSQL/media/readme_images/enable-preview-features.png)
+
+- In the Preview features section, provide your Azure subscription details.
+- Choose Microsoft.DBforPostgreSQL as the type.
+- Select "Online migration for migration service in Azure Database for PostgreSQL" from the list.
+- Click "Register" to get the access to the preview feature.
+
+![Select Preview Feature](migration-service-Azure-DB-PostgreSQL/media/readme_images/enable-runtime-server.png)
+
+Get started with the migration runtime server from on-premises/IaaS/AWS/Azure Database for PostgreSQL - Single server to Azure Database for PostgreSQL - Flexible server -
+
 - [**Introduction to Migration runtime server within migration service in Azure Database for PostgreSQL**](migration-service-Azure-DB-PostgreSQL/Migration-Runtime-Server/overview.md)
 
 ## Start your offline migration using Azure ARM Template
