@@ -239,7 +239,10 @@ Before initiating cutover, it's important to ensure that:
 - 
 ![cutovermigration](media/tutorial-portal/portal_online_cutover_migration.png)
 
-- `Latency (minutes)` parameter indicates when the target last synced up with the source. For example, for the salesdb database above, it's 0.33333. It means that the changes that occurred in the last ~0.3 minutes at the source are yet to be synced to the target, for the salesdb Database. At this point, writes to the source can be stopped and cutover initiated. In case there's heavy traffic at the source, it's recommended to stop writes first so that `Latency (minutes)` can come close to 0 and then cutover is initiated. The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero Latency, the replication stops until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it's recommended that the latency goes to zero or near zero, before triggering the cutover.
+- `latency` value decreases to 0 or close to 0
+- `latency` value indicates when the target last synced up with the source. At this point, writes to the source can be stopped and cutover initiated.In case there is heavy traffic at the source, it is recommended to stop writes first so that `Latency` can come close to 0 and then cutover is initiated.
+- The Cutover operation applies all pending changes from the Source to the Target and completes the migration. If you trigger a "Cutover" even with non-zero `Latency`, the replication will stop until that point in time. All the data on source until the cutover point is then applied on the target. Say a latency was 15 minutes at cutover point, so all the change data in the last 15 minutes will be applied on the target. 
+- Time taken will depend on the backlog of changes occurred in the last 15 minutes. Hence, it is recommended that the latency goes to zero or near zero, before triggering the cutover.
 
 ![confirmcutovermigration](media/tutorial-portal/portal_online_confirm_cutover.png)
 
