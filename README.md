@@ -27,6 +27,10 @@ For more detailed information and guidance on using the migration service in Azu
 
 ## Using Migration runtime server
 
+> [!NOTE]  
+> Scenarios supported -  Migration from Azure Database for PostgreSQL - Single Server with a private endpoint to Azure Database for PostgreSQL - Flexible Server with a private endpoint. Migration from on-premises databases, Azure VMs, or AWS instances that are only accessible via private networks to Azure Database for PostgreSQL - Flexible Server with a private endpoint.
+
+
 The Migration Runtime Server is a specialized feature within the [migration service in Azure Database for PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/migrate/migration-service/concepts-migration-service-postgresql), designed to act as an intermediary server during the migration process.
 
 - Sign in to the Azure Portal at https://portal.azure.com.
@@ -52,6 +56,9 @@ Get started with the offline migration from on-premises/IaaS/AWS to Azure Databa
 - [**Using the Azure ARM Template - Migrate from IaaS to Azure Database for PostgreSQL - Flexible server (Offline)**](migration-service-Azure-DB-PostgreSQL/Offline-Migrations/IaaS-to-Flexible-offline-migration-using-ARM-Template.md)
 
 ## Start your online migration
+
+> [!NOTE]  
+> This section of the document pertains to the online migration feature. For source Azure Database for PostgreSQL Single Server, online feature is currently in public preview, and a detailed tutorial can be found in the main documentation. For users migrating from a source such as an Azure VM, AWS, or on-premises environments, the preview feature must be enabled through the Azure Portal.
 
 - Sign in to the Azure Portal at https://portal.azure.com.
 - Search for "Preview features" in the Azure portal search bar.
