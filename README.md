@@ -40,7 +40,7 @@ The Migration Runtime Server is a specialized feature within the [migration serv
 
 - In the Preview features section, provide your Azure subscription details.
 - Choose Microsoft.DBforPostgreSQL as the type.
-- Select "Online migration for migration service in Azure Database for PostgreSQL" from the list.
+- Select "Enable migration runtime server" from the list.
 - Click "Register" to get the access to the preview feature.
 
 ![Select Preview Feature](migration-service-Azure-DB-PostgreSQL/media/readme_images/enable-runtime-server.png)
