@@ -19,7 +19,7 @@ To configure network connectivity for migrations from an Azure Database for Post
 | Scenarios | Description |
 | ---- | ---- |
 | Scenario 1 | [Azure PostgreSQL Single Server with Private Endpoint to Flexible Server with Private Endpoint](#scenario-1-azure-postgresql-single-server-with-private-endpoint-to-flexible-server-with-private-endpoint) |
-| Scenario 2 | [Azure PostgreSQL Single Server with Private Endpoint to Flexible Server with Private Endpoint](#scenario-2-on-premisesazure-vmaws-with-private-ips-to-azure-postgresql-flexible-server-with-private-endpoint) |
+| Scenario 2 | [On-Premises/Azure VM/AWS with Private IPs to Flexible Server with Private Endpoint](#scenario-2-on-premisesazure-vmaws-with-private-ips-to-azure-postgresql-flexible-server-with-private-endpoint) |
 | Scenario 3 | [Custom private DNS Zone attached to the private endpoint](#scenario-3-custom-private-dns-zone-attached-to-the-private-endpoint) |
 
 ## Scenario 1: Azure PostgreSQL Single Server with Private Endpoint to Flexible Server with Private Endpoint

@@ -36,6 +36,7 @@ In this document, you will learn to -
 - Choose a Azure Database for PostgreSQL – Flexible Server SKU that corresponds with the source's specifications.
 - Refer to the quickstart guide for creating a Flexible Server: [Quickstart: Create server - Azure portal.](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/quickstart-create-server-portal)
 - When configuring the Migration Runtime Server, it is not necessary to match the PostgreSQL version or set up High Availability (HA) and Disaster Recovery (DR) options, as the server's sole purpose is to facilitate the migration between the source and the target databases. The focus should be on ensuring the server has sufficient resources to handle the migration process efficiently.
+- VNet-integrated Azure Database for PostgreSQL – Flexible Server requires delegated subnet.
 
 ### Target Setup
 
