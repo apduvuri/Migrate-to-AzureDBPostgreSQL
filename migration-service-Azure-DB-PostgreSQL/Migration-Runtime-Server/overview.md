@@ -49,7 +49,7 @@ To use the Migration Runtime Server feature within the migration service in Azur
 ## Migration Runtime Server essentials
 
 - **Minimal Configuration** - Despite being created from an Azure Database for PostgreSQL Flexible Server, the migration runtime server's role is to solely facilitate migration, without the need for HA, backups, version specificity, or advanced storage features.
-- **Performance and Sizing** - Ensure that the Migration Runtime Server is provisioned with a SKU that matches or exceeds the target server's SKU to handle the migration workload effectively. Adequate sizing is essential to maintain performance and avoid bottlenecks during the migration process.
+- **Performance and Sizing** - The migration runtime server must be appropriately scaled to manage the workload, with a recommendation to select a SKU equivalent to or greater than that of the target server.
 - **Networking** Ensure that the migration runtime server is properly integrated into the Virtual Network (VNet) and that network security allows for secure communication with both the source and target servers. For more information, refer the [documentation](concepts-network.md)
 - **Cleanup Post-Migration** - After the migration is complete, the migration runtime server should be decommissioned to avoid unnecessary costs. Ensure all data has been successfully migrated and that the server is no longer needed before deletion.
 
