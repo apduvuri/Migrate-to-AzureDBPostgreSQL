@@ -106,11 +106,19 @@ For performing migrations, you can use the provided JSON file and create the mig
         "description": "Template to create a migration from source PostrgeSQL Server to target Azure database for PostgreSQL Flexible Server and using offline"
     },
     "parameters": {
+"migrationName": {
+            "type": "String",
+            "metadata": {
+                "description": "Name of the migration from the source server to target server"
+            }
+        },
 		"SourceType": {
 			"defaultValue": "OnPremises",
             "allowedValues": [
                 "OnPremises",
-                "AzureVM"
+                "AzureVM",
+                "AWS_RDS",
+                "PostgreSQLSingleServer"
             ],
             "type": "String",
             "metadata": {
@@ -121,12 +129,6 @@ For performing migrations, you can use the provided JSON file and create the mig
             "type": "String",
             "metadata": {
                 "description": "Target Azure database for PostgreSQL Flexible Server name to which data will be migrated"
-            }
-        },
-        "migrationName": {
-            "type": "String",
-            "metadata": {
-                "description": "Name of the migration from the source server to target server"
             }
         },
         "sourceServerResourceId": {
@@ -170,6 +172,12 @@ For performing migrations, you can use the provided JSON file and create the mig
                 "description": "Location for all resources."
             }
         },
+         "RuntimeServer": {
+          "type": "string",
+          "metadata": {
+          "description": "ResourceId of the private endpoint migration instance"
+          }
+        },
         "dbNamesToMigrate": {
             "defaultValue": [],
             "type": "Array",
@@ -203,7 +211,8 @@ For performing migrations, you can use the provided JSON file and create the mig
         "migrationMode": {
             "defaultValue": "Offline",
             "allowedValues": [
-                "Offline"
+                "Offline",
+                "Online"
             ],
             "type": "String",
             "metadata": {
@@ -225,7 +234,7 @@ For performing migrations, you can use the provided JSON file and create the mig
     "resources": [
         {
             "type": "Microsoft.DBforPostgreSQL/flexibleServers/migrations",
-            "apiVersion": "2023-06-01-preview",
+            "apiVersion": "2023-12-01-preview",
             "name": "[concat(parameters('targetServerName'), '/', parameters('migrationName'))]",
             "location": "[parameters('location')]",
             "properties": {
@@ -243,7 +252,8 @@ For performing migrations, you can use the provided JSON file and create the mig
                 "overwriteDbsInTarget": "[parameters('overwriteDbsInTarget')]",
 				"migrationOption": "[parameters('migrationOption')]",
                 "sslMode": "[parameters('SslMode')]",
-                "sourceType": "[parameters('SourceType')]"
+                "sourceType": "[parameters('SourceType')]",
+                "migrationInstanceResourceId": "[parameters('RuntimeServer')]"
 				
             }
         }
